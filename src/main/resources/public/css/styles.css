@@ -1,0 +1,117 @@
+*{
+  box-sizing:border-box;
+}
+body{
+  max-width:100%;
+  margin: 0;
+
+}
+.ss-bg{
+  background-image: url(/../images/solar-system.jpg);
+  background-repeat:no-repeat;
+  background-size: cover;
+}
+
+nav{
+  width: 100%;
+  background-color: #376a86;
+  overflow: hidden;
+}
+nav  a{
+  float: left;
+  color:white;
+  padding: 10px;
+  margin: 0px;
+  text-decoration:none;
+  text-transform: uppercase;
+}
+button,nav a{
+  text-align: center;
+  vertical-align: middle;
+  text-transform: uppercase;
+}
+nav button {
+  width:50px;
+  float:right;
+  color:#376a86;
+  background-color: white;
+  border-radius: 50px;
+  border: 0px;
+  margin: 5px 8px 5px 0px;
+  padding: 5px;
+}
+nav a:hover {
+  background-color:white;
+  color:#376a86;
+
+}
+nav button:hover{
+  background-color:lightblue;
+  color:white;
+}
+.center{
+  width:80%;
+  padding: 20px;
+  margin: auto;
+  text-align: center;
+}
+.tx-center{
+  width:70%;
+  padding: 10px;
+  margin:20px auto 20px auto;
+  text-align: justify;
+}
+.image{
+  width: 60%;
+  height:60%;
+  margin: auto;
+  display: block;
+}
+
+.btn{
+  width:70%;
+  padding: 10px;
+  margin: auto;
+  text-align: center;
+  border:1px lightblue solid;
+  background-color:#376a90;
+  color:white;
+  cursor: pointer;
+}
+.invisible{
+  display:none;
+}
+.hover-effect:hover {
+  opacity:0.8;
+}
+
+@media (min-width:1px) and (max-width:400px){
+  nav  a{
+    width:100%;
+  }
+  nav button{
+    width:50px;
+    float:none;
+    display: block;
+    margin: 5px auto 5px auto;
+  }
+  .ss-bg{
+    background-image: url(/../images/solar-system.jpg);
+    background-repeat:no-repeat;
+    background-size: cover;
+  }
+
+}
+@media (min-width:401px) and (max-width:768px){
+  nav  a{
+    width:17%;
+  }
+  .btn{
+    padding:5px;
+  }
+}
+@media (min-width:1024px){
+  nav  a{
+    width:10%;
+  }
+}
