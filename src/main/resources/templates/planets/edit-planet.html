@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit planet</title>
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
+</head>
+<body>
+<div class="container-fluid">
+    <header>
+        <th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
+    </header>
+    <main class="mt-4 mb-4">
+        <div class="container">
+            <h1>Edit planet</h1>
+            <form th:action="@{/planets/edit/{id} (id=${planetBindingModel.id})}" method="post"
+                  th:object="${planetBindingModel}">
+                <div class="form-group" th:classappend="${#fields.hasErrors('name')}? 'has-danger'">
+                    <label for="inputName" th:text="Name"></label>
+                    <input type="text" th:name="name" class="form-control" id="inputName" th:field="*{name}"/>
+                    <small th:id="nameHelp" th:each="error : ${#fields.errors('name')}" th:text="${error}"></small>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('starSystem')}? 'has-danger'">
+                    <label for="inputAffectedStarSystems" th:text="|Galaxies|"></label>
+                    <select class="form-control" th:name="starSystem" id="inputAffectedStarSystems"
+                            th:field="*{starSystem}">
+                        <th:block th:each="starSystem : ${starSystemsModels}">
+                            <option th:value="${starSystem.id}" th:text="${starSystem.name}"></option>
+                        </th:block>
+                    </select>
+                    <small th:id="starSystemsHelp" th:each="error : ${#fields.errors('starSystem')}"
+                           th:text="${error}"></small>
+                </div>
+                <div class="form-check"
+                     th:each="planetType : ${T(solarsystem.domain.entities.enums.PlanetType).values()}">
+                    <input class="form-check-input" type="radio" name="planetType" th:id="${{planetType}}"
+                           th:value="${planetType}" th:field="*{planetType}">
+                    <label th:classappend="${#fields.hasErrors('planetType')}? 'has-danger'" class="form-check-label"
+                           th:for="${{planetType}}" th:text="${{planetType.type}}"></label>  <!---->
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('age')}? 'has-danger'">
+                    <label for="age" th:text="|Age|"></label>
+                    <input type="text" th:name="age" class="form-control" id="age"
+                           th:field="*{age}"/>
+                    <small th:id="age"
+                           th:each="error : ${#fields.errors('age')}" th:text="${error}"></small>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('temperature')}? 'has-danger'">
+                    <label for="temperature" th:text="|Temperature|"></label>
+                    <input type="text" th:name="temperature" class="form-control" id="temperature"
+                           th:field="*{temperature}"/>
+                    <small th:id="temperature"
+                           th:each="error : ${#fields.errors('temperature')}" th:text="${error}"></small>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('radius')}? 'has-danger'">
+                    <label for="radius" th:text="|Radius|"></label>
+                    <input type="text" th:name="radius" class="form-control" id="radius"
+                           th:field="*{radius}"/>
+                    <small th:id="temperature"
+                           th:each="error : ${#fields.errors('radius')}" th:text="${error}"></small>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('square')}? 'has-danger'">
+                    <label for="square" th:text="|Square|"></label>
+                    <input type="text" th:name="square" class="form-control" id="square"
+                           th:field="*{square}"/>
+                    <small th:id="square"
+                           th:each="error : ${#fields.errors('square')}" th:text="${error}"></small>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('density')}? 'has-danger'">
+                    <label for="density" th:text="|Density|"></label>
+                    <input type="text" th:name="density" class="form-control" id="density"
+                           th:field="*{density}"/>
+                    <small th:id="density"
+                           th:each="error : ${#fields.errors('density')}" th:text="${error}"></small>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('mass')}? 'has-danger'">
+                    <label for="mass" th:text="|Mass|"></label>
+                    <input type="text" th:name="mass" class="form-control" id="mass"
+                           th:field="*{mass}"/>
+                    <small th:id="mass"
+                           th:each="error : ${#fields.errors('mass')}" th:text="${error}"></small>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('distanceToStarSystem')}? 'has-danger'">
+                    <label for="distanceToStarSystem" th:text="|Distance to star system|"></label>
+                    <input type="text" th:name="distanceToStarSystem" class="form-control" id="distanceToStarSystem"
+                           th:field="*{distanceToStarSystem}"/>
+                    <small th:id="distanceToStarSystem"
+                           th:each="error : ${#fields.errors('distanceToStarSystem')}" th:text="${error}"></small>
+                </div>
+                <div class="form-check mt-3">
+                    <input class="form-check-input" th:name="thereMagneticField" type="checkbox" id="thereMagneticField"
+                           th:field="*{thereMagneticField}"/>
+                    <label class="form-check-label" for="thereMagneticField"
+                           th:text="|Is there magnetic field|"></label>
+                </div>
+                <div class="form-check mt-3">
+                    <input class="form-check-input" th:name="thereAtmosphere" type="checkbox" id="thereAtmosphere"
+                           th:field="*{thereAtmosphere}"/>
+                    <label class="form-check-label" for="thereAtmosphere" th:text="|Is there atmosphere|"></label>
+                </div>
+                <div class="form-check mt-3">
+                    <input class="form-check-input" th:name="thereLife" type="checkbox" id="thereLife"
+                           th:field="*{thereLife}"/>
+                    <label class="form-check-label" for="thereLife" th:text="|Is there life|"></label>
+                </div>
+                <div class="form-check mt-3">
+                    <input class="form-check-input" th:name="thereRing" type="checkbox" id="thereRing"
+                           th:field="*{thereRing}"/>
+                    <label class="form-check-label" for="thereLife" th:text="|Is there ring|"></label>
+                </div>
+                <div class="row">
+                    <div class="col text-center">
+                        <button class="btn btn-custom" th:text="|Edit planet|"></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <th:block th:replace="~{fragments/footer :: footer}"></th:block>
+    </footer>
+</div>
+</body>
+</html>

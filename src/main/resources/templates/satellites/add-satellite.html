@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add satellite</title>
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
+</head>
+<body>
+<div class="container-fluid">
+    <header>
+        <th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
+    </header>
+    <main class="mt-4 mb-4">
+        <div class="container">
+            <h1>Add new Satellite</h1>
+            <form th:action="@{/satellites/add}" method="post" th:object="${satelliteBindingModel}">
+                <div class="form-group" th:classappend="${#fields.hasErrors('name')}? 'has-danger'">
+                    <label for="inputName" th:text="Name"></label>
+                    <input type="text" th:name="name" class="form-control" id="inputName" th:field="*{name}"/>
+                    <small th:id="nameHelp" th:each="error : ${#fields.errors('name')}" th:text="${error}"></small>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('planet')}? 'has-danger'">
+                    <label for="inputAffectedPlanets" th:text="|Planet|"></label>
+                    <select class="form-control" th:name="galaxies" id="inputAffectedPlanets"
+                            th:field="*{planet}">
+                        <th:block th:each="planet : ${planetsModels}">
+                            <option th:value="${planet.id}" th:text="${planet.name}"></option>
+                        </th:block>
+                    </select>
+                    <small th:id="PlanetsHelp" th:each="error : ${#fields.errors('planet')}"
+                           th:text="${error}"></small>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('age')}? 'has-danger'">
+                    <label for="age" th:text="|Age|"></label>
+                    <input type="text" th:name="age" class="form-control" id="age"
+                           th:field="*{age}"/>
+                    <small th:id="age"
+                           th:each="error : ${#fields.errors('age')}" th:text="${error}"></small>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('temperature')}? 'has-danger'">
+                    <label for="temperature" th:text="|Temperature|"></label>
+                    <input type="text" th:name="temperature" class="form-control" id="temperature"
+                           th:field="*{temperature}"/>
+                    <small th:id="temperature"
+                           th:each="error : ${#fields.errors('temperature')}" th:text="${error}"></small>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('radius')}? 'has-danger'">
+                    <label for="radius" th:text="|Radius|"></label>
+                    <input type="text" th:name="radius" class="form-control" id="radius"
+                           th:field="*{radius}"/>
+                    <small th:id="temperature"
+                           th:each="error : ${#fields.errors('radius')}" th:text="${error}"></small>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('square')}? 'has-danger'">
+                    <label for="square" th:text="|Square|"></label>
+                    <input type="text" th:name="square" class="form-control" id="square"
+                           th:field="*{square}"/>
+                    <small th:id="square"
+                           th:each="error : ${#fields.errors('square')}" th:text="${error}"></small>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('density')}? 'has-danger'">
+                    <label for="density" th:text="|Density|"></label>
+                    <input type="text" th:name="density" class="form-control" id="density"
+                           th:field="*{density}"/>
+                    <small th:id="density"
+                           th:each="error : ${#fields.errors('density')}" th:text="${error}"></small>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('mass')}? 'has-danger'">
+                    <label for="mass" th:text="|Mass|"></label>
+                    <input type="text" th:name="mass" class="form-control" id="mass"
+                           th:field="*{mass}"/>
+                    <small th:id="mass"
+                           th:each="error : ${#fields.errors('mass')}" th:text="${error}"></small>
+                </div>
+                <div class="form-group" th:classappend="${#fields.hasErrors('distanceToThePlanet')}? 'has-danger'">
+                    <label for="distanceToThePlanet" th:text="|Distance to the planet|"></label>
+                    <input type="text" th:name="distanceToThePlanet" class="form-control" id="distanceToThePlanet"
+                           th:field="*{distanceToThePlanet}"/>
+                    <small th:id="distanceToThePlanet"
+                           th:each="error : ${#fields.errors('distanceToThePlanet')}" th:text="${error}"></small>
+                </div>
+                <div class="row">
+                    <div class="col text-center">
+                        <button class="btn btn-custom" th:text="|Add satellite|"></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+    <footer>
+        <th:block th:replace="~{fragments/footer :: footer}"></th:block>
+    </footer>
+</div>
+</body>
+</html>

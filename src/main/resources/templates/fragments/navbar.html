@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en">  <!--xmlns:sec="http://www.w3.org/1999/xhtml"-->
+<nav th:fragment="navbar" class="navbar navbar-expand-lg re-background">
+    <a class="navbar-brand" th:href="@{/}">Solar System</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/register}">Register</a> <!--sec:authorize="!isAuthenticated()"-->
+            </li>
+
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/login}">Login</a> <!-- sec:authorize="!isAuthenticated()"-->
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/home}">Home</a> <!--sec:authorize="isAuthenticated()"-->
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Galaxies
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" th:href="@{/galaxies/show}">Show</a>
+                    <a class="dropdown-item" th:href="@{/galaxies/add}">Add</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownPlanets" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Planets
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownPlanets">
+                    <a class="dropdown-item" th:href="@{/planets/show}">Show</a>
+                    <a class="dropdown-item" th:href="@{/planets/add}">Add</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownSatellites" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Satellites
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownSatellites">
+                    <a class="dropdown-item" th:href="@{/satellites/show}">Show</a>
+                    <a class="dropdown-item" th:href="@{/satellites/add}">Add</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownStars" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Stars
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownStars">
+                    <a class="dropdown-item" th:href="@{/stars/show}">Show</a>
+                    <a class="dropdown-item" th:href="@{/stars/add}">Add</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownStarSystems" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Star Systems
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownStarSystems">
+                    <a class="dropdown-item" th:href="@{/starSystems/show}">Show</a>
+                    <a class="dropdown-item" th:href="@{/starSystems/add}">Add</a>
+                </div>
+            </li>
+            <!--
+                        <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                            <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdownList" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" >
+                                Viruses
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown" >
+                                <a class="dropdown-item" th:href="@{/galaxies/show}" sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR', 'ROLE_USER')">Show</a>
+                                <a class="dropdown-item" th:href="@{/galaxies/add}"  sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_MODERATOR')">Add</a>
+                            </div>
+
+                        </li>
+
+
+                        <li class="nav-item active">
+                            <a class="nav-link text-white" th:href="@{/allUsers}"  sec:authorize="hasRole('ROLE_ADMIN')">All Users</a>
+                        </li>
+
+                        <li class="nav-item active">
+                            <a class="nav-link text-white" th:href="@{/logout}" sec:authorize="isAuthenticated()">Logout</a>
+                        </li>-->
+        </ul>
+    </div>
+</nav>
+
+</html>
