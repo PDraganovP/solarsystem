@@ -6,12 +6,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import solarsystem.domain.models.binding.GalaxyBindingModel;
 import solarsystem.domain.models.binding.SatelliteBindingModel;
-import solarsystem.domain.models.service.GalaxyServiceModel;
+import solarsystem.domain.models.service.PlanetServiceModel;
 import solarsystem.domain.models.service.SatelliteServiceModel;
-import solarsystem.domain.models.view.GalaxyViewModel;
+import solarsystem.domain.models.view.PlanetViewModel;
 import solarsystem.domain.models.view.SatelliteViewModel;
+import solarsystem.services.PlanetService;
 import solarsystem.services.SatelliteService;
 
 import javax.validation.Valid;
@@ -23,11 +23,13 @@ import java.util.stream.Collectors;
 public class SatelliteController extends BaseController {
     private SatelliteService satelliteService;
     private ModelMapper modelMapper;
+    private PlanetService planetService;
 
     @Autowired
-    public SatelliteController(SatelliteService satelliteService, ModelMapper modelMapper) {
+    public SatelliteController(SatelliteService satelliteService, ModelMapper modelMapper, PlanetService planetService) {
         this.satelliteService = satelliteService;
         this.modelMapper = modelMapper;
+        this.planetService = planetService;
     }
 
     @GetMapping("/show")
@@ -43,6 +45,9 @@ public class SatelliteController extends BaseController {
     @GetMapping("/add")
     public ModelAndView renderAddSatellitePage(@ModelAttribute("satelliteBindingModel") SatelliteBindingModel satelliteBindingModel,
                                                ModelAndView modelAndView) {
+        List<PlanetViewModel> planetsOrderedByName = this.findPlanetsOrderedByName();
+        modelAndView.addObject("planetsModels", planetsOrderedByName);
+
         return this.view("satellites/add-satellite", modelAndView);
     }
 
@@ -68,6 +73,8 @@ public class SatelliteController extends BaseController {
     public ModelAndView renderEditSatellitePage(@PathVariable("id") String id,
                                              @ModelAttribute("satelliteBindingModel") SatelliteBindingModel satelliteBindingModel,
                                              ModelAndView modelAndView) {
+        List<PlanetViewModel> planetsOrderedByName = this.findPlanetsOrderedByName();
+        modelAndView.addObject("planetsModels", planetsOrderedByName);
 
         SatelliteServiceModel satelliteServiceModel = this.satelliteService.findById(id);
         satelliteBindingModel = this.modelMapper.map(satelliteServiceModel, SatelliteBindingModel.class);
@@ -112,6 +119,15 @@ public class SatelliteController extends BaseController {
         // return this.redirect("galaxies/all");
         //  return this.view("galaxies/all-galaxies",modelAndView);
         return this.redirect("/satellites/show");
+    }
+
+    private List<PlanetViewModel> findPlanetsOrderedByName() {
+        List<PlanetServiceModel> planetServiceModelList = this.planetService.findAllOrderedByName();
+        List<PlanetViewModel> planetViewModelList = planetServiceModelList.stream().map(planetServiceModel -> this.modelMapper
+                .map(planetServiceModel, PlanetViewModel.class))
+                .collect(Collectors.toList());
+        return planetViewModelList;
+
     }
 
 }

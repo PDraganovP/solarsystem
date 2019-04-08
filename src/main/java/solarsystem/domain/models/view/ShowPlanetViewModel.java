@@ -1,13 +1,9 @@
-package solarsystem.domain.entities;
+package solarsystem.domain.models.view;
 
 import solarsystem.domain.entities.enums.PlanetType;
 
-import javax.persistence.*;
-import java.util.Set;
-
-@Entity
-@Table(name = "planets")
-public class Planet extends SpaceObject {
+public class ShowPlanetViewModel {
+    private String id;
     private String name;
     private PlanetType planetType;
     private Boolean isThereMagneticField;
@@ -15,13 +11,24 @@ public class Planet extends SpaceObject {
     private Boolean isThereLife;
     private Double distanceToStarSystem;
     private Boolean isThereRing;
-    private StarSystem starSystem;
-    private Set<Satellite> satellites;
+    private Double age;
+    private Double temperature;
+    private Double radius;
+    private Double square;
+    private Double density;
+    private Double mass;
 
-    public Planet() {
+    public ShowPlanetViewModel() {
     }
 
-    @Column(name = "planet_name")
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -30,8 +37,6 @@ public class Planet extends SpaceObject {
         this.name = name;
     }
 
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "planet_type")
     public PlanetType getPlanetType() {
         return planetType;
     }
@@ -40,7 +45,6 @@ public class Planet extends SpaceObject {
         this.planetType = planetType;
     }
 
-    @Column(name = "is_there_magnetic_field")
     public Boolean getThereMagneticField() {
         return isThereMagneticField;
     }
@@ -49,7 +53,6 @@ public class Planet extends SpaceObject {
         isThereMagneticField = thereMagneticField;
     }
 
-    @Column(name = "is_there_atmosphere")
     public Boolean getThereAtmosphere() {
         return isThereAtmosphere;
     }
@@ -58,7 +61,6 @@ public class Planet extends SpaceObject {
         isThereAtmosphere = thereAtmosphere;
     }
 
-    @Column(name = "is_there_life")
     public Boolean getThereLife() {
         return isThereLife;
     }
@@ -67,7 +69,6 @@ public class Planet extends SpaceObject {
         isThereLife = thereLife;
     }
 
-    @Column(name = "distance_to_star_system")
     public Double getDistanceToStarSystem() {
         return distanceToStarSystem;
     }
@@ -76,7 +77,6 @@ public class Planet extends SpaceObject {
         this.distanceToStarSystem = distanceToStarSystem;
     }
 
-    @Column(name = "iS_there_ring")
     public Boolean getThereRing() {
         return isThereRing;
     }
@@ -85,23 +85,51 @@ public class Planet extends SpaceObject {
         isThereRing = thereRing;
     }
 
-    @ManyToOne
-    public StarSystem getStarSystem() {
-        return starSystem;
+    public Double getAge() {
+        return age;
     }
 
-    public void setStarSystem(StarSystem starSystem) {
-        this.starSystem = starSystem;
+    public void setAge(Double age) {
+        this.age = age;
     }
 
-    @OneToMany(mappedBy = "planet")
-    public Set<Satellite> getSatellites() {
-        return satellites;
+    public Double getTemperature() {
+        return temperature;
     }
 
-    public void setSatellites(Set<Satellite> satellites) {
-        this.satellites = satellites;
+    public void setTemperature(Double temperature) {
+        this.temperature = temperature;
     }
 
+    public Double getRadius() {
+        return radius;
+    }
+
+    public void setRadius(Double radius) {
+        this.radius = radius;
+    }
+
+    public Double getSquare() {
+        return square;
+    }
+
+    public void setSquare(Double square) {
+        this.square = square;
+    }
+
+    public Double getDensity() {
+        return density;
+    }
+
+    public void setDensity(Double density) {
+        this.density = density;
+    }
+
+    public Double getMass() {
+        return mass;
+    }
+
+    public void setMass(Double mass) {
+        this.mass = mass;
+    }
 }
-

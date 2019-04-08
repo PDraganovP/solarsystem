@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <script src="../../public/js/show-planets.js" th:src="@{/js/show-planets.js}"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -10,15 +11,14 @@
     </header>
     <main class="mt-3">
         <h1 class="text-center text-dark">All star systems</h1>
-        <hr class="hr-2 bg-dark">
         <table class="table table-hover">
             <thead>
             <tr class="row mx-auto">
                 <th class="col-md-1 text-center">#</th>
                 <th class="col-md-2 text-center">Name</th>
+                <th class="col-md-2 text-center">Galaxy</th>
                 <th class="col-md-2 text-center">Star</th>
                 <th class="col-md-2 text-center">Planets</th>
-                <th class="col-md-2 text-center">Galaxy</th>
                 <th class="col-md-3 text-center">Actions</th>
             </tr>
             </thead>
@@ -27,10 +27,14 @@
                 <tr class="row mx-auto">
                     <th class="col-md-1 text-center" th:text="${iter.index + 1}"></th>
                     <td class="col-md-2 text-center" th:text="*{name}"></td>
-                    <td class="col-md-2 text-center" th:text="${starSystem.star} ? ${starSystem.star.name} :'No'"></td>
-                    <td class="col-md-2 text-center" th:text="${starSystem.planets} ? 'Yes': 'No'"></td>
                     <td class="col-md-2 text-center"
                         th:text="${starSystem.galaxy} ? ${starSystem.galaxy.name} :'No'"></td>
+                    <td class="col-md-2 text-center" th:text="${starSystem.star} ? ${starSystem.star.name} :'No'"></td>
+                    <td class="col-md-2 text-center">
+                        <button th:value="${starSystem.id}" th:id="${starSystem.id}" class="btn btn-custom btn-sm">Show
+                            planets
+                        </button>
+                    </td>  <!--th:text="${starSystem.planets} ? 'Yes': 'No'"-->
                     <td class="col-md-2 text-center">
                         <a type="button" class="btn btn-custom btn-sm"
                            th:href="@{/starSystems/edit/{id}(id=${starSystem.id})}">Edit star system</a>
@@ -44,7 +48,7 @@
             </th:block>
             </tbody>
         </table>
-        <hr class="hr-2 bg-dark">
+        <table id="ajax-table"></table>
     </main>
     <footer>
         <th:block th:replace="~{fragments/footer :: footer}"></th:block>

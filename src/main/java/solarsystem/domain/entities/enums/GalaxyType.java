@@ -1,7 +1,7 @@
 package solarsystem.domain.entities.enums;
 
 public enum GalaxyType {
-    SPIRAL("spiral"), ELLIPTICAL("elliptical"), IRREGULAR("irregular");
+    SPIRAL("Spiral"), ELLIPTICAL("Elliptical"), IRREGULAR("Irregular");
     private String type;
 
     GalaxyType(String type) {

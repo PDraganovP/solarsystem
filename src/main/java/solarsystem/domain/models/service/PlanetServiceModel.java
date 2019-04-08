@@ -1,13 +1,17 @@
-package solarsystem.domain.entities;
+package solarsystem.domain.models.service;
 
+import solarsystem.domain.entities.Satellite;
+import solarsystem.domain.entities.StarSystem;
 import solarsystem.domain.entities.enums.PlanetType;
 
-import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
-@Entity
-@Table(name = "planets")
-public class Planet extends SpaceObject {
+public class PlanetServiceModel {
+    private String id;
     private String name;
     private PlanetType planetType;
     private Boolean isThereMagneticField;
@@ -15,13 +19,28 @@ public class Planet extends SpaceObject {
     private Boolean isThereLife;
     private Double distanceToStarSystem;
     private Boolean isThereRing;
+    private Double age;
+    private Double temperature;
+    private Double radius;
+    private Double square;
+    private Double density;
+    private Double mass;
     private StarSystem starSystem;
     private Set<Satellite> satellites;
 
-    public Planet() {
+    public PlanetServiceModel() {
     }
 
-    @Column(name = "planet_name")
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @NotNull
+    @Size(min = 3, max = 30, message = "Cannot be empty, should be between 3 and 30 symbols.")
     public String getName() {
         return name;
     }
@@ -30,17 +49,17 @@ public class Planet extends SpaceObject {
         this.name = name;
     }
 
-    @Enumerated(value = EnumType.STRING)
-    @Column(name = "planet_type")
+    @NotNull(message = "Cannot be null.")
     public PlanetType getPlanetType() {
         return planetType;
     }
+
 
     public void setPlanetType(PlanetType planetType) {
         this.planetType = planetType;
     }
 
-    @Column(name = "is_there_magnetic_field")
+    @NotNull(message = "Cannot be null.")
     public Boolean getThereMagneticField() {
         return isThereMagneticField;
     }
@@ -49,7 +68,7 @@ public class Planet extends SpaceObject {
         isThereMagneticField = thereMagneticField;
     }
 
-    @Column(name = "is_there_atmosphere")
+    @NotNull(message = "Cannot be null.")
     public Boolean getThereAtmosphere() {
         return isThereAtmosphere;
     }
@@ -58,7 +77,7 @@ public class Planet extends SpaceObject {
         isThereAtmosphere = thereAtmosphere;
     }
 
-    @Column(name = "is_there_life")
+    @NotNull(message = "Cannot be null.")
     public Boolean getThereLife() {
         return isThereLife;
     }
@@ -67,7 +86,8 @@ public class Planet extends SpaceObject {
         isThereLife = thereLife;
     }
 
-    @Column(name = "distance_to_star_system")
+    @Min(1)
+    @Max(10000000)
     public Double getDistanceToStarSystem() {
         return distanceToStarSystem;
     }
@@ -76,7 +96,7 @@ public class Planet extends SpaceObject {
         this.distanceToStarSystem = distanceToStarSystem;
     }
 
-    @Column(name = "iS_there_ring")
+    @NotNull(message = "Cannot be null.")
     public Boolean getThereRing() {
         return isThereRing;
     }
@@ -85,7 +105,61 @@ public class Planet extends SpaceObject {
         isThereRing = thereRing;
     }
 
-    @ManyToOne
+    @Max(100000)
+    public Double getAge() {
+        return age;
+    }
+
+    public void setAge(Double age) {
+        this.age = age;
+    }
+
+    @Max(1000000)
+    public Double getTemperature() {
+        return temperature;
+    }
+
+
+    public void setTemperature(Double temperature) {
+        this.temperature = temperature;
+    }
+
+    @Max(1000000)
+    public Double getRadius() {
+        return radius;
+    }
+
+    public void setRadius(Double radius) {
+        this.radius = radius;
+    }
+
+    @Max(1000000)
+    public Double getSquare() {
+        return square;
+    }
+
+    public void setSquare(Double square) {
+        this.square = square;
+    }
+
+    @Max(100000)
+    public Double getDensity() {
+        return density;
+    }
+
+    public void setDensity(Double density) {
+        this.density = density;
+    }
+
+    @Max(1000000)
+    public Double getMass() {
+        return mass;
+    }
+
+    public void setMass(Double mass) {
+        this.mass = mass;
+    }
+
     public StarSystem getStarSystem() {
         return starSystem;
     }
@@ -94,7 +168,6 @@ public class Planet extends SpaceObject {
         this.starSystem = starSystem;
     }
 
-    @OneToMany(mappedBy = "planet")
     public Set<Satellite> getSatellites() {
         return satellites;
     }
@@ -102,6 +175,4 @@ public class Planet extends SpaceObject {
     public void setSatellites(Set<Satellite> satellites) {
         this.satellites = satellites;
     }
-
 }
-

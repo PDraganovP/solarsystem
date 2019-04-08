@@ -8,11 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import solarsystem.domain.models.binding.PlanetBindingModel;
 import solarsystem.domain.models.service.PlanetServiceModel;
-import solarsystem.domain.models.service.StarServiceModel;
 import solarsystem.domain.models.service.StarSystemServiceModel;
 import solarsystem.domain.models.view.PlanetViewModel;
 import solarsystem.domain.models.view.StarSystemViewModel;
-import solarsystem.domain.models.view.StarViewModel;
 import solarsystem.services.PlanetService;
 import solarsystem.services.StarSystemService;
 
@@ -80,6 +78,8 @@ public class PlanetController extends BaseController {
     public ModelAndView renderEditPlanetPage(@PathVariable("id") String id,
                                              @ModelAttribute("planetBindingModel") PlanetBindingModel planetBindingModel,
                                              ModelAndView modelAndView) {
+        List<StarSystemViewModel> starSystemsOrderedByName = this.findStarSystemsOrderedByName();
+        modelAndView.addObject("starSystemsModels", starSystemsOrderedByName);
 
         PlanetServiceModel planetServiceModel = this.planetService.findById(id);
         planetBindingModel = this.modelMapper.map(planetServiceModel, PlanetBindingModel.class);
@@ -138,8 +138,7 @@ public class PlanetController extends BaseController {
         List<StarSystemServiceModel> starServiceModelList = this.starSystemService.findAllOrderedByName();
         List<StarSystemViewModel> starSystemViewModelList = starServiceModelList
                 .stream()
-                .map(starSystemServiceModel ->    this.modelMapper
-                        .map(starSystemServiceModel, StarSystemViewModel.class))
+                .map(starSystemServiceModel -> this.modelMapper.map(starSystemServiceModel, StarSystemViewModel.class))
                 .collect(Collectors.toList());
         return starSystemViewModelList;
 

@@ -6,16 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import solarsystem.domain.models.binding.GalaxyBindingModel;
 import solarsystem.domain.models.binding.StarSystemBindingModel;
 import solarsystem.domain.models.service.GalaxyServiceModel;
-import solarsystem.domain.models.service.PlanetServiceModel;
-import solarsystem.domain.models.service.StarServiceModel;
 import solarsystem.domain.models.service.StarSystemServiceModel;
 import solarsystem.domain.models.view.GalaxyViewModel;
-import solarsystem.domain.models.view.PlanetViewModel;
 import solarsystem.domain.models.view.StarSystemViewModel;
-import solarsystem.domain.models.view.StarViewModel;
 import solarsystem.services.GalaxyService;
 import solarsystem.services.PlanetService;
 import solarsystem.services.StarService;
@@ -58,12 +53,12 @@ public class StarSystemController extends BaseController {
     @GetMapping("/add")
     public ModelAndView renderAddStarSystemPage(@ModelAttribute("starSystemBindingModel") StarSystemBindingModel starSystemBindingModel,
                                                 ModelAndView modelAndView) {
-        List<PlanetViewModel> planetsOrderedByName = this.findPlanetsOrderedByName();
+       /* List<PlanetViewModel> planetsOrderedByName = this.findPlanetsOrderedByName();*/
         List<GalaxyViewModel> galaxiesOrderedByName = this.findGalaxiesOrderedByName();
-        List<StarViewModel> starsOrderedByName = this.findStarsOrderedByName();
-        modelAndView.addObject("planetsModels", planetsOrderedByName);
+       // List<StarViewModel> starsOrderedByName = this.findStarsOrderedByName();
+        //modelAndView.addObject("planetsModels", planetsOrderedByName);
         modelAndView.addObject("galaxiesModels", galaxiesOrderedByName);
-        modelAndView.addObject("starsModels", starsOrderedByName);
+        //modelAndView.addObject("starsModels", starsOrderedByName);
 
 
         return this.view("starSystems/add-starSystem", modelAndView);
@@ -92,12 +87,12 @@ public class StarSystemController extends BaseController {
                                              @ModelAttribute("starSystemBindingModel") StarSystemBindingModel starSystemBindingModel,
                                              ModelAndView modelAndView) {
 
-        List<PlanetViewModel> planetsOrderedByName = this.findPlanetsOrderedByName();
+       // List<PlanetViewModel> planetsOrderedByName = this.findPlanetsOrderedByName();
         List<GalaxyViewModel> galaxiesOrderedByName = this.findGalaxiesOrderedByName();
-        List<StarViewModel> starsOrderedByName = this.findStarsOrderedByName();
-        modelAndView.addObject("planetsModels", planetsOrderedByName);
+       // List<StarViewModel> starsOrderedByName = this.findStarsOrderedByName();
+       // modelAndView.addObject("planetsModels", planetsOrderedByName);
         modelAndView.addObject("galaxiesModels", galaxiesOrderedByName);
-        modelAndView.addObject("starsModels", starsOrderedByName);
+        //modelAndView.addObject("starsModels", starsOrderedByName);
 
         StarSystemServiceModel starSystemServiceModel = this.starSystemService.findById(id);
         starSystemBindingModel = this.modelMapper.map(starSystemServiceModel, StarSystemBindingModel.class);
@@ -146,14 +141,14 @@ public class StarSystemController extends BaseController {
     }
 
 
-    private List<PlanetViewModel> findPlanetsOrderedByName() {
+    /*private List<PlanetViewModel> findPlanetsOrderedByName() {
         List<PlanetServiceModel> planetServiceModelList = this.planetService.findAllOrderedByName();
         List<PlanetViewModel> planetViewModelList = planetServiceModelList.stream().map(planetServiceModel -> this.modelMapper
                 .map(planetServiceModel, PlanetViewModel.class))
                 .collect(Collectors.toList());
         return planetViewModelList;
 
-    }
+    }*/
     private List<GalaxyViewModel> findGalaxiesOrderedByName() {
         List<GalaxyServiceModel> galaxyServiceModelList = this.galaxyService.findAllOrderedByName();
         List<GalaxyViewModel> galaxyViewModelList = galaxyServiceModelList
@@ -164,7 +159,7 @@ public class StarSystemController extends BaseController {
         return galaxyViewModelList;
 
     }
-    private List<StarViewModel> findStarsOrderedByName() {
+   /* private List<StarViewModel> findStarsOrderedByName() {
         List<StarServiceModel> starServiceModelList = this.starService.findAllOrderedByName();
         List<StarViewModel> starViewModelList = starServiceModelList
                 .stream()
@@ -173,5 +168,5 @@ public class StarSystemController extends BaseController {
                 .collect(Collectors.toList());
         return starViewModelList;
 
-    }
+    }*/
 }

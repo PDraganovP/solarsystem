@@ -5,7 +5,6 @@ import javax.persistence.*;
 @Entity
 @Table(name = "satellites")
 public class Satellite extends SpaceObject {
-
     private String name;
     private Planet planet;
     private Double distanceToThePlanet;
