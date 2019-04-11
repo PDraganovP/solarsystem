@@ -1,4 +1,4 @@
-package solarsystem.repositories;
+package solarsystem.repository;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
