@@ -124,7 +124,9 @@ public class PlanetServiceModel {
         this.temperature = temperature;
     }
 
-    @Max(1000000)
+    @Max(value = 125,message = "Radius can not be bigger than 125")
+    @Min(value = 0,message = "Radius can not be negative")
+    @NotNull(message = "Cannot be null.")
     public Double getRadius() {
         return radius;
     }

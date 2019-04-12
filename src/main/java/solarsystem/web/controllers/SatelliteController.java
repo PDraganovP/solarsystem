@@ -2,6 +2,7 @@ package solarsystem.web.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,8 @@ import solarsystem.domain.models.view.PlanetViewModel;
 import solarsystem.domain.models.view.SatelliteViewModel;
 import solarsystem.services.PlanetService;
 import solarsystem.services.SatelliteService;
+import solarsystem.web.annotations.PageFooter;
+import solarsystem.web.annotations.PageNavbar;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -33,6 +36,9 @@ public class SatelliteController extends BaseController {
     }
 
     @GetMapping("/show")
+    @PreAuthorize("isAuthenticated()")
+    @PageFooter
+    @PageNavbar
     public ModelAndView show(ModelAndView modelAndView) {
         List<SatelliteServiceModel> satelliteServiceModelList = this.satelliteService.findAllOrderedByName();
         List<SatelliteViewModel> satelliteViewModelList = satelliteServiceModelList.stream().map(satelliteServiceModel -> this.modelMapper
@@ -43,6 +49,9 @@ public class SatelliteController extends BaseController {
     }
 
     @GetMapping("/add")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PageFooter
+    @PageNavbar
     public ModelAndView renderAddSatellitePage(@ModelAttribute("satelliteBindingModel") SatelliteBindingModel satelliteBindingModel,
                                                ModelAndView modelAndView) {
         List<PlanetViewModel> planetsOrderedByName = this.findPlanetsOrderedByName();
@@ -52,9 +61,10 @@ public class SatelliteController extends BaseController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ModelAndView addSatellite(ModelAndView modelAndView,
-                                  @Valid @ModelAttribute(name = "satelliteBindingModel") SatelliteBindingModel satelliteBindingModel,
-                                  BindingResult bindingResult) {
+                                     @Valid @ModelAttribute(name = "satelliteBindingModel") SatelliteBindingModel satelliteBindingModel,
+                                     BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return this.view("satellites/add-satellite", modelAndView);
         }
@@ -70,9 +80,12 @@ public class SatelliteController extends BaseController {
     }
 
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PageFooter
+    @PageNavbar
     public ModelAndView renderEditSatellitePage(@PathVariable("id") String id,
-                                             @ModelAttribute("satelliteBindingModel") SatelliteBindingModel satelliteBindingModel,
-                                             ModelAndView modelAndView) {
+                                                @ModelAttribute("satelliteBindingModel") SatelliteBindingModel satelliteBindingModel,
+                                                ModelAndView modelAndView) {
         List<PlanetViewModel> planetsOrderedByName = this.findPlanetsOrderedByName();
         modelAndView.addObject("planetsModels", planetsOrderedByName);
 
@@ -85,6 +98,7 @@ public class SatelliteController extends BaseController {
     }
 
     @PostMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ModelAndView editGalaxy(@PathVariable("id") String id,
                                    @Valid @ModelAttribute("satelliteBindingModel") SatelliteBindingModel satelliteBindingModel,
                                    BindingResult bindingResult,
@@ -98,26 +112,20 @@ public class SatelliteController extends BaseController {
         SatelliteServiceModel satelliteServiceModel = this.modelMapper.map(satelliteBindingModel, SatelliteServiceModel.class);
 
         this.satelliteService.editSatellite(satelliteServiceModel);
-        /*List<GalaxyServiceModel> galaxyServiceModelList = this.galaxyService.findAllOrderedByName();
-        List<GalaxyViewModel> GalaxyViewModelList = galaxyServiceModelList.stream().map(galaxy -> this.modelMapper
-                .map(galaxy, GalaxyViewModel.class))
-                .collect(Collectors.toList());
-        modelAndView.addObject("galaxyViewModel",GalaxyViewModelList);*/
-        // return this.view("galaxies/all-galaxies");
+
         return this.redirect("/satellites/show");
     }
 
     @PostMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ModelAndView deleteGalaxy(@PathVariable("id") String id, ModelAndView modelAndView) {
         boolean isDeleted = this.satelliteService.deleteSatelliteById(id);
 
         if (!isDeleted) {
-            //Error message: something went wrong!
+
             return this.view("satellites/all-satellites", modelAndView);
         }
 
-        // return this.redirect("galaxies/all");
-        //  return this.view("galaxies/all-galaxies",modelAndView);
         return this.redirect("/satellites/show");
     }
 

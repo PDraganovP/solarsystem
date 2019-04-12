@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import solarsystem.domain.entities.Galaxy;
 import solarsystem.domain.models.service.GalaxyServiceModel;
-import solarsystem.repositories.GalaxyRepository;
+import solarsystem.repository.GalaxyRepository;
 import solarsystem.services.GalaxyService;
 
 import java.util.List;

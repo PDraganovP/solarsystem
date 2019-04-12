@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import solarsystem.domain.entities.Planet;
 import solarsystem.domain.models.service.PlanetServiceModel;
-import solarsystem.repositories.PlanetRepository;
+import solarsystem.repository.PlanetRepository;
 import solarsystem.services.PlanetService;
 
 import java.util.List;

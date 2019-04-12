@@ -2,6 +2,7 @@ package solarsystem.web.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -13,13 +14,15 @@ import solarsystem.domain.models.view.StarSystemViewModel;
 import solarsystem.domain.models.view.StarViewModel;
 import solarsystem.services.StarService;
 import solarsystem.services.StarSystemService;
+import solarsystem.web.annotations.PageFooter;
+import solarsystem.web.annotations.PageNavbar;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("stars")
+@RequestMapping("/stars")
 public class StarController extends BaseController {
     private StarService starService;
     private ModelMapper modelMapper;
@@ -33,6 +36,9 @@ public class StarController extends BaseController {
     }
 
     @GetMapping("/show")
+    @PreAuthorize("isAuthenticated()")
+    @PageFooter
+    @PageNavbar
     public ModelAndView show(ModelAndView modelAndView) {
         List<StarServiceModel> starServiceModelList = this.starService.findAllOrderedByName();
         List<StarViewModel> starViewModelList = starServiceModelList.stream().map(starServiceModel -> this.modelMapper
@@ -43,14 +49,21 @@ public class StarController extends BaseController {
     }
 
     @GetMapping("/add")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PageFooter
+    @PageNavbar
     public ModelAndView renderAddStarPage(@ModelAttribute("starBindingModel") StarBindingModel starBindingModel,
                                           ModelAndView modelAndView) {
-        List<StarSystemViewModel> starSystemsOrderedByName = this.findStarSystemsOrderedByName();
+        List<StarSystemViewModel> starSystemsOrderedByName = this.findStarSystemsOrderedByName()
+                .stream()
+                .filter(starSystemViewModel -> starSystemViewModel.getStar() == null)
+                .collect(Collectors.toList()); //This because one to one relation
         modelAndView.addObject("starSystemsModels", starSystemsOrderedByName);
         return this.view("stars/add-star", modelAndView);
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ModelAndView addStar(ModelAndView modelAndView,
                                 @Valid @ModelAttribute(name = "starBindingModel") StarBindingModel starBindingModel,
                                 BindingResult bindingResult) {
@@ -64,16 +77,22 @@ public class StarController extends BaseController {
         if (starServiceModelWithId == null) {
             return this.view("stars/add-star", modelAndView);
         }
-        //   return this.view("galaxies/all-galaxies", modelAndView);
         return this.redirect("/stars/show");
     }
 
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PageFooter
+    @PageNavbar
     public ModelAndView renderEditStarPage(@PathVariable("id") String id,
                                            @ModelAttribute("starBindingModel") StarBindingModel starBindingModel,
                                            ModelAndView modelAndView) {
 
-        List<StarSystemViewModel> starSystemsOrderedByName = this.findStarSystemsOrderedByName();
+        List<StarSystemViewModel> starSystemsOrderedByName = this.findStarSystemsOrderedByName()
+                .stream()
+                .filter(starSystemViewModel -> starSystemViewModel.getStar() == null)
+                .collect(Collectors.toList());
+        ;
         modelAndView.addObject("starSystemsModels", starSystemsOrderedByName);
 
         StarServiceModel starServiceModel = this.starService.findById(id);
@@ -85,6 +104,7 @@ public class StarController extends BaseController {
     }
 
     @PostMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ModelAndView editGalaxy(@PathVariable("id") String id,
                                    @Valid @ModelAttribute("starBindingModel") StarBindingModel starBindingModel,
                                    BindingResult bindingResult,
@@ -98,27 +118,33 @@ public class StarController extends BaseController {
         StarServiceModel starServiceModel = this.modelMapper.map(starBindingModel, StarServiceModel.class);
 
         this.starService.editStar(starServiceModel);
-        /*List<GalaxyServiceModel> galaxyServiceModelList = this.galaxyService.findAllOrderedByName();
-        List<GalaxyViewModel> GalaxyViewModelList = galaxyServiceModelList.stream().map(galaxy -> this.modelMapper
-                .map(galaxy, GalaxyViewModel.class))
-                .collect(Collectors.toList());
-        modelAndView.addObject("galaxyViewModel",GalaxyViewModelList);*/
-        // return this.view("galaxies/all-galaxies");
+
         return this.redirect("/stars/show");
     }
 
     @PostMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ModelAndView deleteStar(@PathVariable("id") String id, ModelAndView modelAndView) {
         boolean isDeleted = this.starService.deleteStarById(id);
 
         if (!isDeleted) {
-            //Error message: something went wrong!
             return this.view("stars/all-stars", modelAndView);
         }
 
-        // return this.redirect("galaxies/all");
-        //  return this.view("galaxies/all-galaxies",modelAndView);
         return this.redirect("/stars/show");
+    }
+
+    @GetMapping("/compareStars")
+    @PreAuthorize("isAuthenticated()")
+    @PageFooter
+    @PageNavbar
+    public ModelAndView getCompareStarsPage(ModelAndView modelAndView) {
+        List<StarViewModel> starsOrderedByName = this.findStarsOrderedByName();
+        modelAndView.addObject("starsOne", starsOrderedByName);
+        List<StarViewModel> starsOrderedByNameTwo = this.findStarsOrderedByName();
+        modelAndView.addObject("starsTwo", starsOrderedByNameTwo);
+
+        return this.view("stars/compare-stars", modelAndView);
     }
 
     private List<StarSystemViewModel> findStarSystemsOrderedByName() {
@@ -128,6 +154,17 @@ public class StarController extends BaseController {
                 .map(starSystemServiceModel -> this.modelMapper.map(starSystemServiceModel, StarSystemViewModel.class))
                 .collect(Collectors.toList());
         return starSystemViewModelList;
+
+    }
+
+    private List<StarViewModel> findStarsOrderedByName() {
+        List<StarServiceModel> starServiceModelList = this.starService.findAllOrderedByName();
+        List<StarViewModel> starViewModelList = starServiceModelList
+                .stream()
+                .map(starServiceModel -> this.modelMapper
+                        .map(starServiceModel, StarViewModel.class))
+                .collect(Collectors.toList());
+        return starViewModelList;
 
     }
 }

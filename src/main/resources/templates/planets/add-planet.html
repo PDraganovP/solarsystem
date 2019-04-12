@@ -5,13 +5,13 @@
     <th:block th:replace="~{fragments/head :: head}"></th:block>
 </head>
 <body>
-<div class="container-fluid">
+<div>
     <header>
         <th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
     </header>
     <main class="mt-4 mb-4">
         <div class="container">
-            <h1>Add new Planet</h1>
+            <h1 class="text-center text-white">Add new Planet</h1>
             <form th:action="@{/planets/add}" method="post" th:object="${planetBindingModel}">
                 <div class="form-group" th:classappend="${#fields.hasErrors('name')}? 'has-danger'">
                     <label for="inputName" th:text="Name"></label>
@@ -37,7 +37,7 @@
                            th:for="${{planetType}}" th:text="${{planetType.type}}"></label>  <!---->
                 </div>
                 <div class="form-group" th:classappend="${#fields.hasErrors('age')}? 'has-danger'">
-                    <label for="age" th:text="|Age|"></label>
+                    <label for="age" th:text="|Age (billion years)|"></label>
                     <input type="text" th:name="age" class="form-control" id="age"
                            th:field="*{age}"/>
                     <small th:id="age"
@@ -79,7 +79,7 @@
                            th:each="error : ${#fields.errors('mass')}" th:text="${error}"></small>
                 </div>
                 <div class="form-group" th:classappend="${#fields.hasErrors('distanceToStarSystem')}? 'has-danger'">
-                    <label for="distanceToStarSystem" th:text="|Distance to star system|"></label>
+                    <label for="distanceToStarSystem" th:text="|Distance to star system (light years)|"></label>
                     <input type="text" th:name="distanceToStarSystem" class="form-control" id="distanceToStarSystem"
                            th:field="*{distanceToStarSystem}"/>
                     <small th:id="distanceToStarSystem"

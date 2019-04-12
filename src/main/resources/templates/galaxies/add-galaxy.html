@@ -5,14 +5,13 @@
     <th:block th:replace="~{fragments/head :: head}"></th:block>
 </head>
 <body>
-<div class="container-fluid">
+<div>
     <header>
         <th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
     </header>
     <main class="mt-4 mb-4">
         <div class="container">
-            <h1>Add new Galaxy</h1>
-
+            <h1 class="text-center text-white">Add new Galaxy</h1>
             <form th:action="@{/galaxies/add}" method="post" th:object="${galaxyBindingModel}">
                 <div class="form-group" th:classappend="${#fields.hasErrors('name')}? 'has-danger'">
                     <label for="inputName" th:text="Name"></label>
@@ -27,7 +26,8 @@
                            th:for="${{galaxyType}}" th:text="${{galaxyType.type}}"></label>
                 </div>
                 <div class="form-group" th:classappend="${#fields.hasErrors('distanceToNearestGalaxy')}? 'has-danger'">
-                    <label for="distanceToNearestGalaxy" th:text="|Distance to the nearest galaxy|"></label>
+                    <label for="distanceToNearestGalaxy"
+                           th:text="|Distance to the nearest galaxy (light years)|"></label>
                     <input type="text" th:name="name" class="form-control" id="distanceToNearestGalaxy"
                            th:field="*{distanceToNearestGalaxy}"/>
                     <small th:id="distanceToNearestGalaxy"

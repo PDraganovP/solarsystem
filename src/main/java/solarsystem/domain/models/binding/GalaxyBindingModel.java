@@ -1,7 +1,6 @@
 package solarsystem.domain.models.binding;
 
 import solarsystem.domain.entities.enums.GalaxyType;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -21,6 +20,7 @@ public class GalaxyBindingModel {
     public void setId(String id) {
         this.id = id;
     }
+
     @NotNull
     @Size(min = 4, max = 40, message = "Cannot be empty, should be between 4 and 40 symbols.")
     public String getName() {
@@ -30,6 +30,7 @@ public class GalaxyBindingModel {
     public void setName(String name) {
         this.name = name;
     }
+
     @NotNull(message = "Cannot be null.")
     public GalaxyType getGalaxyType() {
         return galaxyType;

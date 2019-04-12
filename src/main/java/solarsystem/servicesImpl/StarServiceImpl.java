@@ -2,10 +2,11 @@ package solarsystem.servicesImpl;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import solarsystem.domain.entities.Star;
 import solarsystem.domain.models.service.StarServiceModel;
-import solarsystem.repositories.StarRepository;
+import solarsystem.repository.StarRepository;
 import solarsystem.services.StarService;
 
 import java.util.List;
@@ -80,6 +81,17 @@ public class StarServiceImpl implements StarService {
         star.setRadius(starServiceModel.getRadius());
         star.setSquare(starServiceModel.getSquare());
         star.setTemperature(starServiceModel.getTemperature());
+    }
 
+    @Scheduled(fixedDelay = 1200000)
+    private void setMass() {
+        List<Star> stars = this.starRepository.findAll();
+        for (Star star : stars) {
+            Double mass = star.getMass();
+            if (mass == null) {
+                star.setMass(0d);
+                this.starRepository.save(star);
+            }
+        }
     }
 }

@@ -2,6 +2,7 @@ package solarsystem.web.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,8 @@ import solarsystem.domain.models.binding.GalaxyBindingModel;
 import solarsystem.domain.models.service.GalaxyServiceModel;
 import solarsystem.domain.models.view.GalaxyViewModel;
 import solarsystem.services.GalaxyService;
+import solarsystem.web.annotations.PageFooter;
+import solarsystem.web.annotations.PageNavbar;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -29,10 +32,11 @@ public class GalaxyController extends BaseController {
     }
 
     @GetMapping("/show")
+    @PreAuthorize("isAuthenticated()")
+    @PageFooter
+    @PageNavbar
     public ModelAndView show(ModelAndView modelAndView) {
-      /*  final List<VirusShowModel> viruses = virusService.findAll().stream()
-                .map(virus -> modelMapper.map(virus, VirusShowModel.class)).collect(Collectors.toList());
-        modelAndView.addObject("viruses", viruses);*/
+
         List<GalaxyServiceModel> galaxyServiceModelList = this.galaxyService.findAllOrderedByName();
         List<GalaxyViewModel> galaxyViewModelList = galaxyServiceModelList.stream().map(galaxyServiceModel -> this.modelMapper
                 .map(galaxyServiceModel, GalaxyViewModel.class)).collect(Collectors.toList());
@@ -42,12 +46,16 @@ public class GalaxyController extends BaseController {
     }
 
     @GetMapping("/add")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PageFooter
+    @PageNavbar
     public ModelAndView renderAddGalaxyPage(@ModelAttribute("galaxyBindingModel") GalaxyBindingModel galaxyBindingModel,
                                             ModelAndView modelAndView) {
         return this.view("galaxies/add-galaxy", modelAndView);
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ModelAndView addGalaxy(ModelAndView modelAndView,
                                   @Valid @ModelAttribute(name = "galaxyBindingModel") GalaxyBindingModel galaxyBindingModel,
                                   BindingResult bindingResult) {
@@ -61,11 +69,14 @@ public class GalaxyController extends BaseController {
         if (galaxyServiceModelWithId == null) {
             return this.view("galaxies/add-galaxy", modelAndView);
         }
-        //   return this.view("galaxies/all-galaxies", modelAndView);
+
         return this.redirect("/galaxies/show");
     }
 
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PageFooter
+    @PageNavbar
     public ModelAndView renderEditGalaxyPage(@PathVariable("id") String id,
                                              @ModelAttribute("galaxyBindingModel") GalaxyBindingModel galaxyBindingModel,
                                              ModelAndView modelAndView) {
@@ -79,6 +90,7 @@ public class GalaxyController extends BaseController {
     }
 
     @PostMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ModelAndView editGalaxy(@PathVariable("id") String id,
                                    @Valid @ModelAttribute("galaxyBindingModel") GalaxyBindingModel galaxyBindingModel,
                                    BindingResult bindingResult,
@@ -92,26 +104,20 @@ public class GalaxyController extends BaseController {
         GalaxyServiceModel galaxyServiceModel = this.modelMapper.map(galaxyBindingModel, GalaxyServiceModel.class);
 
         this.galaxyService.editGalaxy(galaxyServiceModel);
-        /*List<GalaxyServiceModel> galaxyServiceModelList = this.galaxyService.findAllOrderedByName();
-        List<GalaxyViewModel> GalaxyViewModelList = galaxyServiceModelList.stream().map(galaxy -> this.modelMapper
-                .map(galaxy, GalaxyViewModel.class))
-                .collect(Collectors.toList());
-        modelAndView.addObject("galaxyViewModel",GalaxyViewModelList);*/
-        // return this.view("galaxies/all-galaxies");
+
         return this.redirect("/galaxies/show");
     }
 
     @PostMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ModelAndView deleteGalaxy(@PathVariable("id") String id, ModelAndView modelAndView) {
         boolean isDeleted = this.galaxyService.deleteGalaxyById(id);
 
         if (!isDeleted) {
-            //Error message: something went wrong!
+
             return this.view("galaxies/all-galaxies", modelAndView);
         }
 
-        // return this.redirect("galaxies/all");
-        //  return this.view("galaxies/all-galaxies",modelAndView);
         return this.redirect("/galaxies/show");
     }
 }

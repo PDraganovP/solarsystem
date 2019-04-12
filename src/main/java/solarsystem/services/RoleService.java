@@ -8,8 +8,6 @@ public interface RoleService {
 
     void seedRolesInDb();
 
-//    void assignUserRoles(UserServiceModel userServiceModel, long numberOfUsers);
-
     Set<RoleServiceModel> findAllRoles();
 
     RoleServiceModel findByAuthority(String authority);

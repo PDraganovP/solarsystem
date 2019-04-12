@@ -11,11 +11,11 @@ public interface StarService {
 
     StarServiceModel saveStar(StarServiceModel starServiceModel);
 
-   void editStar(StarServiceModel starServiceModel);
+    void editStar(StarServiceModel starServiceModel);
 
     StarServiceModel findById(String id);
 
     boolean deleteStarById(String id);
 
-  List<StarServiceModel> findAllOrderedByName();
+    List<StarServiceModel> findAllOrderedByName();
 }

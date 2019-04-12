@@ -1,12 +1,8 @@
 $(document).ready(function (){
-    $('tr td button').click(function () {
+    $('tr td button.ajax').click(function () {
 
         let radioAnswer = $(this).val();
 
-        /*let text = $(this).attr('id');
-        if(text==='hide'){
-            $(this).closest('td').attr('id','close');
-        }*/
 
         $('#ajax').remove();
         $('#planets').attr('id','');
@@ -50,13 +46,13 @@ $(document).ready(function (){
          for(i=0;i<data.length;i++){
              $('#planets-data').append(
              '<tr class="row mx-auto"><td class="col-md-1 text-center">' + (i+1) + '</td>'
-             + '<td class="col-md-2 text-center">' + data[i].name +'</td>'
+             + '<td class="col-md-2 text-center">' + data[i].name+'</td>'
              + '<td class="col-md-2 text-center">' + data[i].planetType +'</td>'
-             + '<td class="col-md-1 text-center">' + data[i].distanceToStarSystem +'</td>'
-             + '<td class="col-md-1 text-center">' + data[i].isThereMagneticField +'</td>'
-             + '<td class="col-md-1 text-center">' + data[i].isThereAtmosphere +'</td>'
-             + '<td class="col-md-1 text-center">' + data[i].isThereLife +'</td>'
-             + '<td class="col-md-1 text-center">' + data[i].isThereRing +'</td>'
+             + '<td class="col-md-1 text-center">' + ((data[i].distanceToStarSystem)? data[i].distanceToStarSystem : "No") +'</td>'
+             + '<td class="col-md-1 text-center">' + ((data[i].thereMagneticField)? "Yes" : "No") + '</td>' /*data[i].isThereMagneticField +*/
+             + '<td class="col-md-1 text-center">' + ((data[i].thereAtmosphere)? "Yes" : "No") + '</td>'/* + data[i].isThereAtmosphere*/
+             + '<td class="col-md-1 text-center">' + ((data[i].thereLife)? "Yes" : "No") + '</td>' /*+ data[i].isThereLife*/
+             + '<td class="col-md-1 text-center">' + ((data[i].thereRing) ? "Yes" : "No") + '</td>'
              + '<td class="col-md-1 text-center">'
                  + '<a type="button" class="btn btn-custom btn-sm"'
                     + 'href="/planets/edit/' + data[i].id + '">Edit planet</a>'
@@ -67,12 +63,6 @@ $(document).ready(function (){
                  +'</form>'
              + '</td></tr>');
          }
-         /*if($('#close')){
-            $('#ajax').remove();
-            $('#close').attr('id','');
-            $('#hide').text('Show planets');
-            $('#hide').attr('id','');
-         }*/
 
        });
     });

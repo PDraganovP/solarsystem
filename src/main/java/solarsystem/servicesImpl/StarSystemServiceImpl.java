@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import solarsystem.domain.entities.StarSystem;
 import solarsystem.domain.models.service.StarSystemServiceModel;
-import solarsystem.repositories.StarSystemRepository;
+import solarsystem.repository.StarSystemRepository;
 import solarsystem.services.StarSystemService;
 
 import java.util.List;

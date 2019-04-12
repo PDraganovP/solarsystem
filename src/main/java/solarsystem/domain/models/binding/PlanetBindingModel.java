@@ -123,7 +123,9 @@ public class PlanetBindingModel {
         this.temperature = temperature;
     }
 
-    @Max(1000000)
+    @Max(value = 125,message = "Radius can not be bigger than 125")
+    @Min(value = 0,message = "Radius can not be negative")
+    @NotNull(message = "Cannot be null.")
     public Double getRadius() {
         return radius;
     }
@@ -150,7 +152,8 @@ public class PlanetBindingModel {
         this.density = density;
     }
 
-    @Max(1000000)
+    @Max(value = 1000000,message = "Can not be bigger than 1000000.")
+    @Min(value = 0,message = "Can not be negative.")
     public Double getMass() {
         return mass;
     }

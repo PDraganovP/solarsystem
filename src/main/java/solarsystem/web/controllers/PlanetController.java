@@ -2,7 +2,9 @@ package solarsystem.web.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -13,6 +15,8 @@ import solarsystem.domain.models.view.PlanetViewModel;
 import solarsystem.domain.models.view.StarSystemViewModel;
 import solarsystem.services.PlanetService;
 import solarsystem.services.StarSystemService;
+import solarsystem.web.annotations.PageFooter;
+import solarsystem.web.annotations.PageNavbar;
 
 import javax.validation.Valid;
 
@@ -35,6 +39,9 @@ public class PlanetController extends BaseController {
     }
 
     @GetMapping("/show")
+    @PreAuthorize("isAuthenticated()")
+    @PageFooter
+    @PageNavbar
     public ModelAndView show(ModelAndView modelAndView) {
         List<PlanetServiceModel> planetServiceModelList = this.planetService.findAllOrderedByName();
         List<PlanetViewModel> planetViewModelList = planetServiceModelList.stream()
@@ -46,6 +53,9 @@ public class PlanetController extends BaseController {
     }
 
     @GetMapping("/add")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PageFooter
+    @PageNavbar
     public ModelAndView renderAddPlanetPage(@ModelAttribute("planetBindingModel") PlanetBindingModel planetBindingModel,
                                             ModelAndView modelAndView) {
 
@@ -56,6 +66,7 @@ public class PlanetController extends BaseController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ModelAndView addPlanet(ModelAndView modelAndView,
                                   @Valid @ModelAttribute(name = "planetBindingModel") PlanetBindingModel planetBindingModel,
                                   BindingResult bindingResult) {
@@ -70,11 +81,14 @@ public class PlanetController extends BaseController {
         if (planetServiceModelId == null) {
             return this.view("planets/add-planet", modelAndView);
         }
-        //   return this.view("galaxies/all-galaxies", modelAndView);
+
         return this.redirect("/planets/show");
     }
 
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
+    @PageFooter
+    @PageNavbar
     public ModelAndView renderEditPlanetPage(@PathVariable("id") String id,
                                              @ModelAttribute("planetBindingModel") PlanetBindingModel planetBindingModel,
                                              ModelAndView modelAndView) {
@@ -91,6 +105,7 @@ public class PlanetController extends BaseController {
 
 
     @PostMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ModelAndView editPlanet(@PathVariable("id") String id,
                                    @Valid @ModelAttribute("galaxyBindingModel") PlanetBindingModel planetBindingModel,
                                    BindingResult bindingResult,
@@ -104,35 +119,44 @@ public class PlanetController extends BaseController {
         PlanetServiceModel planetServiceModel = this.modelMapper.map(planetBindingModel, PlanetServiceModel.class);
 
         this.planetService.editPlanet(planetServiceModel);
-        /*List<GalaxyServiceModel> galaxyServiceModelList = this.galaxyService.findAllOrderedByName();
-        List<GalaxyViewModel> GalaxyViewModelList = galaxyServiceModelList.stream().map(galaxy -> this.modelMapper
-                .map(galaxy, GalaxyViewModel.class))
-                .collect(Collectors.toList());
-        modelAndView.addObject("galaxyViewModel",GalaxyViewModelList);*/
-        // return this.view("galaxies/all-galaxies");
+
         return this.redirect("/planets/show");
     }
 
     @PostMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_MODERATOR')")
     public ModelAndView deletePlanet(@PathVariable("id") String id, ModelAndView modelAndView) {
         boolean isDeleted = this.planetService.deletePlanetById(id);
 
         if (!isDeleted) {
-            //Error message: something went wrong!
+
             return this.view("planets/all-planets", modelAndView);
         }
 
-        // return this.redirect("galaxies/all");
-        //  return this.view("galaxies/all-galaxies",modelAndView);
         return this.redirect("/planets/show");
     }
-   /* @GetMapping("/planets")
-    public String showAllPlanets(Model model) {
-        List<Planet> planets = this.planetService.findAll();
-        planets.get(0).getMass();
-        model.addAttribute("planets",planets);
-        return "planets/planets";
-    }*/
+
+    @GetMapping("/comparePlanets")
+    @PreAuthorize("isAuthenticated()")
+    @PageFooter
+    @PageNavbar
+    public ModelAndView getComparePlanetsPage(ModelAndView modelAndView) {
+        List<PlanetViewModel> planetsOrderedByName = this.findPlanetsOrderedByName();
+        modelAndView.addObject("planetsOne", planetsOrderedByName);
+        List<PlanetViewModel> planetsOrderedByName2 = this.findPlanetsOrderedByName();
+        modelAndView.addObject("planetsTwo", planetsOrderedByName2);
+
+        return this.view("planets/compare-planets", modelAndView);
+    }
+
+    private List<PlanetViewModel> findPlanetsOrderedByName() {
+        List<PlanetServiceModel> planetServiceModelList = this.planetService.findAllOrderedByName();
+        List<PlanetViewModel> planetViewModelList = planetServiceModelList.stream().map(planetServiceModel -> this.modelMapper
+                .map(planetServiceModel, PlanetViewModel.class))
+                .collect(Collectors.toList());
+        return planetViewModelList;
+
+    }
 
     private List<StarSystemViewModel> findStarSystemsOrderedByName() {
         List<StarSystemServiceModel> starServiceModelList = this.starSystemService.findAllOrderedByName();
