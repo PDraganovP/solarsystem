@@ -5,7 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 @MappedSuperclass
-public class SpaceObject {
+public abstract class SpaceObject {
     private String id;
     private Double age;
     private Double temperature;

@@ -3,6 +3,7 @@ package solarsystem.domain.models.service;
 import solarsystem.domain.entities.Planet;
 
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -45,7 +46,8 @@ public class SatelliteServiceModel {
     public void setPlanet(Planet planet) {
         this.planet = planet;
     }
-    @Max(1000000)
+    @Max(value = 100000,message = "Field can not be bigger than 100000")
+    @Min(value = 0,message = "Field can not be negative")
     public Double getDistanceToThePlanet() {
         return distanceToThePlanet;
     }
@@ -53,7 +55,8 @@ public class SatelliteServiceModel {
     public void setDistanceToThePlanet(Double distanceToThePlanet) {
         this.distanceToThePlanet = distanceToThePlanet;
     }
-    @Max(100000000)
+    @Max(value = 100000,message = "Field can not be bigger than 100000")
+    @Min(value = 0,message = "Field can not be negative")
     public Double getAge() {
         return age;
     }
@@ -61,7 +64,8 @@ public class SatelliteServiceModel {
     public void setAge(Double age) {
         this.age = age;
     }
-    @Max(1000)
+    @Max(value = 100000,message = "Field can not be bigger than 100000")
+    @Min(value = 0,message = "Field can not be negative")
     public Double getTemperature() {
         return temperature;
     }
@@ -69,7 +73,8 @@ public class SatelliteServiceModel {
     public void setTemperature(Double temperature) {
         this.temperature = temperature;
     }
-    @Max(100000)
+    @Max(value = 100000,message = "Field can not be bigger than 100000")
+    @Min(value = 0,message = "Field can not be negative")
     public Double getRadius() {
         return radius;
     }
@@ -77,7 +82,8 @@ public class SatelliteServiceModel {
     public void setRadius(Double radius) {
         this.radius = radius;
     }
-    @Max(1000000)
+    @Max(value = 100000,message = "Field can not be bigger than 100000")
+    @Min(value = 0,message = "Field can not be negative")
     public Double getSquare() {
         return square;
     }
@@ -85,7 +91,8 @@ public class SatelliteServiceModel {
     public void setSquare(Double square) {
         this.square = square;
     }
-    @Max(10000)
+    @Max(value = 100000,message = "Field can not be bigger than 100000")
+    @Min(value = 0,message = "Field can not be negative")
     public Double getDensity() {
         return density;
     }
@@ -93,7 +100,8 @@ public class SatelliteServiceModel {
     public void setDensity(Double density) {
         this.density = density;
     }
-    @Max(1000000)
+    @Max(value = 100000,message = "Field can not be bigger than 100000")
+    @Min(value = 0,message = "Field can not be negative")
     public Double getMass() {
         return mass;
     }

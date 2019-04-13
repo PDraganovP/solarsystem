@@ -86,8 +86,8 @@ public class PlanetBindingModel {
         isThereLife = thereLife;
     }
 
-    @Min(1)
-    @Max(10000000)
+    @Max(value = 100000,message = "Field an not be bigger than 100000")
+    @Min(value = 0,message = "Field can not be negative")
     public Double getDistanceToStarSystem() {
         return distanceToStarSystem;
     }
@@ -105,7 +105,8 @@ public class PlanetBindingModel {
         isThereRing = thereRing;
     }
 
-    @Max(100000)
+    @Max(value = 100000, message = "Field can not be bigger than 100000")
+    @Min(value = 0, message = "Field can not be negative")
     public Double getAge() {
         return age;
     }
@@ -113,7 +114,9 @@ public class PlanetBindingModel {
     public void setAge(Double age) {
         this.age = age;
     }
-    @Max(1000000)
+
+    @Max(value = 100000, message = "Field can not be bigger than 100000")
+    @Min(value = 0, message = "Field can not be negative")
     public Double getTemperature() {
         return temperature;
     }
@@ -123,8 +126,8 @@ public class PlanetBindingModel {
         this.temperature = temperature;
     }
 
-    @Max(value = 125,message = "Radius can not be bigger than 125")
-    @Min(value = 0,message = "Radius can not be negative")
+    @Max(value = 125, message = "Radius can not be bigger than 125")
+    @Min(value = 0, message = "Radius can not be negative")
     @NotNull(message = "Cannot be null.")
     public Double getRadius() {
         return radius;
@@ -134,7 +137,8 @@ public class PlanetBindingModel {
         this.radius = radius;
     }
 
-    @Max(1000000)
+    @Max(value = 100000,message = "Field can not be bigger than 100000")
+    @Min(value = 0,message = "Field can not be negative")
     public Double getSquare() {
         return square;
     }
@@ -143,7 +147,8 @@ public class PlanetBindingModel {
         this.square = square;
     }
 
-    @Max(100000)
+    @Max(value = 100000,message = "Field can not be bigger than 100000")
+    @Min(value = 0,message = "Field can not be negative")
     public Double getDensity() {
         return density;
     }
@@ -152,8 +157,8 @@ public class PlanetBindingModel {
         this.density = density;
     }
 
-    @Max(value = 1000000,message = "Can not be bigger than 1000000.")
-    @Min(value = 0,message = "Can not be negative.")
+    @Max(value = 100000,message = "Field can not be bigger than 100000")
+    @Min(value = 0,message = "Field can not be negative")
     public Double getMass() {
         return mass;
     }

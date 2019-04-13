@@ -86,8 +86,8 @@ public class PlanetServiceModel {
         isThereLife = thereLife;
     }
 
-    @Min(1)
-    @Max(10000000)
+    @Max(value = 100000,message = "Field can not be bigger than 100000")
+    @Min(value = 0,message = "Field can not be negative")
     public Double getDistanceToStarSystem() {
         return distanceToStarSystem;
     }
@@ -105,7 +105,8 @@ public class PlanetServiceModel {
         isThereRing = thereRing;
     }
 
-    @Max(100000)
+    @Max(value = 100000,message = "Field can not be bigger than 100000")
+    @Min(value = 0,message = "Field can not be negative")
     public Double getAge() {
         return age;
     }
@@ -114,7 +115,8 @@ public class PlanetServiceModel {
         this.age = age;
     }
 
-    @Max(1000000)
+    @Max(value = 100000,message = "Field can not be bigger than 100000")
+    @Min(value = 0,message = "Field can not be negative")
     public Double getTemperature() {
         return temperature;
     }
@@ -135,7 +137,8 @@ public class PlanetServiceModel {
         this.radius = radius;
     }
 
-    @Max(1000000)
+    @Max(value = 100000,message = "Field can not be bigger than 100000")
+    @Min(value = 0,message = "Field can not be negative")
     public Double getSquare() {
         return square;
     }
@@ -144,7 +147,8 @@ public class PlanetServiceModel {
         this.square = square;
     }
 
-    @Max(100000)
+    @Max(value = 100000,message = "Field can not be bigger than 100000")
+    @Min(value = 0,message = "Field can not be negative")
     public Double getDensity() {
         return density;
     }
@@ -153,7 +157,8 @@ public class PlanetServiceModel {
         this.density = density;
     }
 
-    @Max(1000000)
+    @Max(value = 100000,message = "Field can not be bigger than 100000")
+    @Min(value = 0,message = "Field can not be negative")
     public Double getMass() {
         return mass;
     }

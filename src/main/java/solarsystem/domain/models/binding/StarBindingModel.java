@@ -4,6 +4,7 @@ import solarsystem.domain.entities.StarSystem;
 import solarsystem.domain.entities.enums.SpectralClass;
 
 import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -50,7 +51,8 @@ public class StarBindingModel {
         this.spectralClass = spectralClass;
     }
 
-    @Max(10000)
+    @Max(value = 100000,message = "Field can not be bigger than 100000")
+    @Min(value = 0,message = "Field can not be negative")
     public Double getLuminosity() {
         return luminosity;
     }
@@ -67,7 +69,8 @@ public class StarBindingModel {
         this.starSystem = starSystem;
     }
 
-    @Max(1000)
+    @Max(value = 100000,message = "Field can not be bigger than 100000")
+    @Min(value = 0,message = "Field can not be negative")
     public Double getAge() {
         return age;
     }
@@ -76,7 +79,8 @@ public class StarBindingModel {
         this.age = age;
     }
 
-    @Max(10000000)
+    @Max(value = 100000,message = "Field can not be bigger than 100000")
+    @Min(value = 0,message = "Field can not be negative")
     public Double getTemperature() {
         return temperature;
     }
@@ -85,7 +89,8 @@ public class StarBindingModel {
         this.temperature = temperature;
     }
 
-    @Max(100000)
+    @Max(value = 100000,message = "Field can not be bigger than 100000")
+    @Min(value = 0,message = "Field can not be negative")
     public Double getRadius() {
         return radius;
     }
@@ -94,7 +99,8 @@ public class StarBindingModel {
         this.radius = radius;
     }
 
-    @Max(100000000)
+    @Max(value = 100000,message = "Field can not be bigger than 100000")
+    @Min(value = 0,message = "Field can not be negative")
     public Double getSquare() {
         return square;
     }
@@ -103,7 +109,8 @@ public class StarBindingModel {
         this.square = square;
     }
 
-    @Max(100000)
+    @Max(value = 100000,message = "Field can not be bigger than 100000")
+    @Min(value = 0,message = "Field can not be negative")
     public Double getDensity() {
         return density;
     }
@@ -112,7 +119,8 @@ public class StarBindingModel {
         this.density = density;
     }
 
-    @Max(10000000)
+    @Max(value = 100000,message = "Field can not be bigger than 100000")
+    @Min(value = 0,message = "Field can not be negative")
     public Double getMass() {
         return mass;
     }
