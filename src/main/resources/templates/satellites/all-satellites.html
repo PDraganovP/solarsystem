@@ -39,10 +39,10 @@
                     <td class="col-md-1 text-center" th:text="*{density}"></td>
                     <td class="col-md-2 text-center">
                         <a type="button" class="btn btn-custom btn-sm"
-                           th:href="@{/satellites/edit/{id}(id=${satellite.id})}">Edit satellite</a>
+                           th:href="@{/satellites/edit/{id}(id=${satellite.id})}" sec:authorize="hasRole('ROLE_MODERATOR')">Edit satellite</a>
                     </td>
                     <td class="col-md-1 text-center">
-                        <form th:action="@{/satellites/delete/{id}(id=${satellite.id})}" method="post">
+                        <form th:action="@{/satellites/delete/{id}(id=${satellite.id})}" method="post" sec:authorize="hasRole('ROLE_MODERATOR')">
                             <button class="btn btn-custom btn-sm">Delete</button>
                         </form>
                     </td>

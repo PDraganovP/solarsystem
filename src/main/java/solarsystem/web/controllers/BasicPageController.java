@@ -3,14 +3,14 @@ package solarsystem.web.controllers;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.ModelAndView;
-import solarsystem.domain.models.service.PlanetServiceModel;
+import solarsystem.domain.models.service.SatelliteServiceModel;
 import solarsystem.domain.models.service.StarServiceModel;
-import solarsystem.domain.models.view.PlanetViewModel;
+import solarsystem.domain.models.view.SatelliteViewModel;
 import solarsystem.domain.models.view.StarViewModel;
 import solarsystem.services.PlanetService;
-import solarsystem.servicesImpl.StarServiceImpl;
+import solarsystem.services.SatelliteService;
+import solarsystem.services.StarServiceImpl;
 import solarsystem.web.annotations.PageFooter;
 import solarsystem.web.annotations.PageNavbar;
 
@@ -22,11 +22,13 @@ public class BasicPageController extends BaseController {
     private final StarServiceImpl starService;
     private final PlanetService planetService;
     private final ModelMapper modelMapper;
+    private final SatelliteService satelliteService;
 
-    public BasicPageController(StarServiceImpl starService, PlanetService planetService, ModelMapper modelMapper) {
+    public BasicPageController(StarServiceImpl starService, PlanetService planetService, ModelMapper modelMapper, SatelliteService satelliteService) {
         this.starService = starService;
         this.planetService = planetService;
         this.modelMapper = modelMapper;
+        this.satelliteService = satelliteService;
     }
 /*
     @GetMapping("/")
@@ -73,28 +75,28 @@ public class BasicPageController extends BaseController {
     }*/
 
 
-//    @GetMapping("/compareStars")// This code works but it is moved in PlanetController
-//    @PageFooter
-//    @PageNavbar
-//    public ModelAndView getCompareStarsPage(ModelAndView modelAndView) {  //*@ModelAttribute("planetViewModel") PlanetViewModel planetViewModel,PlanetViewModel planetViewModelTwo,*//*
-//        List<StarViewModel> starsOrderedByName = this.findStarsOrderedByName();
-//        modelAndView.addObject("starsOne", starsOrderedByName);
-//        List<StarViewModel> starsOrderedByNameTwo = this.findStarsOrderedByName();
-//        modelAndView.addObject("starsTwo", starsOrderedByNameTwo);
-//        //this.starService.setMass();
-//        return this.view("basicPages/compareStars", modelAndView);
-//    }
-
-//    private List<StarViewModel> findStarsOrderedByName() {
-//        List<StarServiceModel> starServiceModelList = this.starService.findAllOrderedByName();
-//        List<StarViewModel> starViewModelList = starServiceModelList
-//                .stream()
-//                .map(starServiceModel -> this.modelMapper
-//                        .map(starServiceModel, StarViewModel.class))
-//                .collect(Collectors.toList());
-//        return starViewModelList;
-
-//    }
+  // @GetMapping("/compareSatellites")// This code works but it is moved in PlanetController
+  // @PageFooter
+  // @PageNavbar
+  // public ModelAndView getCompareSatellitesPage(ModelAndView modelAndView) {  //*@ModelAttribute("planetViewModel") PlanetViewModel planetViewModel,PlanetViewModel planetViewModelTwo,*//*
+  //     List<SatelliteViewModel> satellitesOrderedByName = this.findSatellitesOrderedByName();
+  //     modelAndView.addObject("satellitesOne", satellitesOrderedByName);
+  //     List<SatelliteViewModel> satellitesOrderedByNameTwo = this.findSatellitesOrderedByName();
+  //     modelAndView.addObject("satellitesTwo", satellitesOrderedByNameTwo);
+  //     //this.starService.setMass();
+  //     return this.view("basicPages/compare-satellites", modelAndView);
+  // }
+//
+  // private List<SatelliteViewModel> findSatellitesOrderedByName() {
+  //     List<SatelliteServiceModel> satelliteServiceModelList = this.satelliteService.findAllOrderedByName();
+  //     List<SatelliteViewModel> satelliteViewModelList = satelliteServiceModelList
+  //             .stream()
+  //             .map(satelliteServiceModel -> this.modelMapper
+  //                     .map(satelliteServiceModel, SatelliteViewModel.class))
+  //             .collect(Collectors.toList());
+  //     return satelliteViewModelList;
+//
+  // }
 
 }
 /*public ModelAndView renderAddSatellitePage(@ModelAttribute("satelliteBindingModel") SatelliteBindingModel satelliteBindingModel,

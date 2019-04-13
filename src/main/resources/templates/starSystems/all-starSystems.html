@@ -38,10 +38,10 @@
                     </td>  <!--th:text="${starSystem.planets} ? 'Yes': 'No'"-->
                     <td class="col-md-2 text-center">
                         <a type="button" class="btn btn-custom btn-sm"
-                           th:href="@{/starSystems/edit/{id}(id=${starSystem.id})}">Edit star system</a>
+                           th:href="@{/starSystems/edit/{id}(id=${starSystem.id})}" sec:authorize="hasRole('ROLE_MODERATOR')">Edit star system</a>
                     </td>
                     <td class="col-md-1 text-center">
-                        <form th:action="@{/starSystems/delete/{id}(id=${starSystem.id})}" method="post">
+                        <form th:action="@{/starSystems/delete/{id}(id=${starSystem.id})}" method="post" sec:authorize="hasRole('ROLE_MODERATOR')">
                             <button class="btn btn-custom btn-sm">Delete</button>
                         </form>
                     </td>

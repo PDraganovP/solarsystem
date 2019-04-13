@@ -39,10 +39,10 @@
                     <td class="col-md-1 text-center" th:text="*{thereRing} ? 'Yes' : 'No'"></td>
                     <td class="col-md-1 text-center">
                         <a type="button" class="btn btn-custom btn-sm"
-                           th:href="@{/planets/edit/{id}(id=${planet.id})}">Edit planet</a>
+                           th:href="@{/planets/edit/{id}(id=${planet.id})}" sec:authorize="hasRole('ROLE_MODERATOR')">Edit planet</a>
                     </td>
                     <td class="col-md-1 text-center">
-                        <form th:action="@{/planets/delete/{id}(id=${planet.id})}" method="post">
+                        <form th:action="@{/planets/delete/{id}(id=${planet.id})}" method="post" sec:authorize="hasRole('ROLE_MODERATOR')">
                             <button class="btn btn-custom btn-sm">Delete</button>
                         </form>
                     </td>

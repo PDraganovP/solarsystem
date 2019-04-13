@@ -26,7 +26,7 @@ public class GalaxyRepositoryTest {
         galaxyOne.setName("Andromeda");
 
         Galaxy galaxyTwo = new Galaxy();
-        galaxyTwo.setName("MilkyWay");
+        galaxyTwo.setName("Milky Way");
 
         Galaxy galaxyThree = new Galaxy();
         galaxyThree.setName("AlphaOne");

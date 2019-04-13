@@ -40,10 +40,10 @@
                     <td class="col-md-1 text-center" th:text="*{density}"></td>
                     <td class="col-md-1 text-center">
                         <a type="button" class="btn btn-custom btn-sm"
-                           th:href="@{/stars/edit/{id}(id=${star.id})}">Edit star</a>
+                           th:href="@{/stars/edit/{id}(id=${star.id})}" sec:authorize="hasRole('ROLE_MODERATOR')">Edit star</a>
                     </td>
                     <td class="col-md-1 text-center">
-                        <form th:action="@{/stars/delete/{id}(id=${star.id})}" method="post">
+                        <form th:action="@{/stars/delete/{id}(id=${star.id})}" method="post" sec:authorize="hasRole('ROLE_MODERATOR')">
                             <button class="btn btn-custom btn-sm">Delete</button>
                         </form>
                     </td>

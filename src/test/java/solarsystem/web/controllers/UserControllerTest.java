@@ -21,37 +21,31 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = SolarSystemApplication.class)
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-public class StarControllerTest {
+public class UserControllerTest {
     @Autowired
     private MockMvc mvc;
 
-
     @Test
-    @WithMockUser(roles = "USER")
-    public void testShow() throws Exception {
-        this.mvc.perform(get("/stars/show")).andDo(print()).andExpect(status().isOk())
-                .andExpect(view().name("stars/all-stars"));
+    // @WithMockUser(roles = "USER")
+    public void testRegister() throws Exception {
+        this.mvc.perform(get("/users/register")).andDo(print()).andExpect(status().isOk())
+                .andExpect(view().name("users/register"));
 
     }
 
     @Test
-    @WithMockUser(roles = "MODERATOR")
-    public void testGetAddStarPage() throws Exception {
-        this.mvc.perform(get("/stars/add")).andDo(print()).andExpect(status().isOk())
-                .andExpect(view().name("stars/add-star"));
+    // @WithMockUser(roles = "USER")
+    public void testLogin() throws Exception {
+        this.mvc.perform(get("/users/login")).andDo(print()).andExpect(status().isOk())
+                .andExpect(view().name("users/login"));
 
     }
 
     @Test
-    @WithMockUser(roles = "MODERATOR")
-    public void testGetEditStarPage() throws Exception {
-        this.mvc.perform(get("/stars/edit")).andDo(print()).andExpect(status().isNotFound());
-    }
+    @WithMockUser(roles = "ADMIN")
+    public void testAllUsers() throws Exception {
+        this.mvc.perform(get("/users/all")).andDo(print()).andExpect(status().isOk())
+                .andExpect(view().name("users/all-users"));
 
-    @Test
-    @WithMockUser(roles = "USER")
-    public void testGetCompareStarsPage() throws Exception {
-        this.mvc.perform(get("/stars/compareStars")).andDo(print()).andExpect(status().isOk())
-                .andExpect(view().name("stars/compare-stars"));
     }
 }

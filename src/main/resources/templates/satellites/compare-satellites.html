@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Compare satellites</title>
+    <th:block th:replace="~{fragments/head :: head}"></th:block>
+    <script src="../../public/js/compare-satellites.js" th:src="@{/js/compare-satellites.js}"></script>
+</head>
+<body>
+<div>
+    <header>
+        <th:block th:replace="~{fragments/navbar :: navbar}"></th:block>
+    </header>
+    <main class="mt-4 mb-4">
+        <h1 class="text-center text-white">Compare temperature of satellites</h1>
+        <div id="divCanvas" class="text-center">
+            <canvas id="satelliteCanvas" width="500" height="400" style="border:3px solid white;"></canvas>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="satellitesOne"><span class="dot dot-left-color"></span>Satellite</label>
+                        <select id="satellitesOne" class="form-control" name="satellitesOne">
+                            <option th:each="satelliteOne: ${satellitesOne}" th:object="${satelliteOne}"
+                                    th:id="*{id}"
+                                    th:value="*{temperature}"
+                                    th:text="*{name}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="satellitesTwo"><span class="dot dot-right-color"></span>Satellite</label>
+                        <select id="satellitesTwo" class="form-control" name="satellitesTwo">
+                            <option th:each="satelliteTwo: ${satellitesTwo} " th:object="${satelliteTwo}"
+                                    th:id="*{id}"
+                                    th:value="*{temperature}"
+                                    th:text="*{name}"></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-center">
+                <button id="compare" class="btn btn-custom" th:text="|Compare|"></button>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <th:block th:replace="~{fragments/footer :: footer}"></th:block>
+    </footer>
+</div>
+</body>
+</html>

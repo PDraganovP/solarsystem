@@ -24,9 +24,9 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/satellites")
 public class SatelliteController extends BaseController {
-    private SatelliteService satelliteService;
-    private ModelMapper modelMapper;
-    private PlanetService planetService;
+    private final SatelliteService satelliteService;
+    private final ModelMapper modelMapper;
+    private final PlanetService planetService;
 
     @Autowired
     public SatelliteController(SatelliteService satelliteService, ModelMapper modelMapper, PlanetService planetService) {
@@ -45,19 +45,19 @@ public class SatelliteController extends BaseController {
                 .map(satelliteServiceModel, SatelliteViewModel.class)).collect(Collectors.toList());
         modelAndView.addObject("satelliteViewModel", satelliteViewModelList);
 
-        return this.view("satellites/all-satellites", modelAndView);
+        return super.view("satellites/all-satellites", modelAndView);
     }
 
     @GetMapping("/add")
     @PreAuthorize("hasRole('ROLE_MODERATOR')")
     @PageFooter
     @PageNavbar
-    public ModelAndView renderAddSatellitePage(@ModelAttribute("satelliteBindingModel") SatelliteBindingModel satelliteBindingModel,
+    public ModelAndView getAddSatellitePage(@ModelAttribute("satelliteBindingModel") SatelliteBindingModel satelliteBindingModel,
                                                ModelAndView modelAndView) {
         List<PlanetViewModel> planetsOrderedByName = this.findPlanetsOrderedByName();
         modelAndView.addObject("planetsModels", planetsOrderedByName);
 
-        return this.view("satellites/add-satellite", modelAndView);
+        return super.view("satellites/add-satellite", modelAndView);
     }
 
     @PostMapping("/add")
@@ -66,24 +66,24 @@ public class SatelliteController extends BaseController {
                                      @Valid @ModelAttribute(name = "satelliteBindingModel") SatelliteBindingModel satelliteBindingModel,
                                      BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return this.view("satellites/add-satellite", modelAndView);
+            return super.view("satellites/add-satellite", modelAndView);
         }
         SatelliteServiceModel satelliteServiceModel = this.modelMapper.map(satelliteBindingModel, SatelliteServiceModel.class);
         SatelliteServiceModel satelliteServiceModelWithId = this.satelliteService.saveSatellite(satelliteServiceModel);
         satelliteBindingModel.setId(satelliteServiceModelWithId.getId());
 
         if (satelliteServiceModelWithId == null) {
-            return this.view("satellites/add-satellite", modelAndView);
+            return super.view("satellites/add-satellite", modelAndView);
         }
-        //   return this.view("galaxies/all-galaxies", modelAndView);
-        return this.redirect("/satellites/show");
+
+        return super.redirect("/satellites/show");
     }
 
     @GetMapping("/edit/{id}")
     @PreAuthorize("hasRole('ROLE_MODERATOR')")
     @PageFooter
     @PageNavbar
-    public ModelAndView renderEditSatellitePage(@PathVariable("id") String id,
+    public ModelAndView getEditSatellitePage(@PathVariable("id") String id,
                                                 @ModelAttribute("satelliteBindingModel") SatelliteBindingModel satelliteBindingModel,
                                                 ModelAndView modelAndView) {
         List<PlanetViewModel> planetsOrderedByName = this.findPlanetsOrderedByName();
@@ -94,7 +94,7 @@ public class SatelliteController extends BaseController {
 
         modelAndView.addObject("satelliteBindingModel", satelliteBindingModel);
 
-        return this.view("satellites/edit-satellite", modelAndView);
+        return super.view("satellites/edit-satellite", modelAndView);
     }
 
     @PostMapping("/edit/{id}")
@@ -105,7 +105,7 @@ public class SatelliteController extends BaseController {
                                    ModelAndView modelAndView) {
 
         if (bindingResult.hasErrors()) {
-            return this.view("satellites/edit-satellite", modelAndView);
+            return super.view("satellites/edit-satellite", modelAndView);
         }
 
         satelliteBindingModel.setId(id);
@@ -113,7 +113,7 @@ public class SatelliteController extends BaseController {
 
         this.satelliteService.editSatellite(satelliteServiceModel);
 
-        return this.redirect("/satellites/show");
+        return super.redirect("/satellites/show");
     }
 
     @PostMapping("/delete/{id}")
@@ -123,10 +123,34 @@ public class SatelliteController extends BaseController {
 
         if (!isDeleted) {
 
-            return this.view("satellites/all-satellites", modelAndView);
+            return super.view("satellites/all-satellites", modelAndView);
         }
 
-        return this.redirect("/satellites/show");
+        return super.redirect("/satellites/show");
+    }
+
+    @GetMapping("/compareSatellites")
+    @PreAuthorize("isAuthenticated()")
+    @PageFooter
+    @PageNavbar
+    public ModelAndView getCompareSatellitesPage(ModelAndView modelAndView) {
+        List<SatelliteViewModel> satellitesOrderedByName = this.findSatellitesOrderedByName();
+        modelAndView.addObject("satellitesOne", satellitesOrderedByName);
+        List<SatelliteViewModel> satellitesOrderedByNameTwo = this.findSatellitesOrderedByName();
+        modelAndView.addObject("satellitesTwo", satellitesOrderedByNameTwo);
+
+        return super.view("satellites/compare-satellites", modelAndView);
+    }
+
+    private List<SatelliteViewModel> findSatellitesOrderedByName() {
+        List<SatelliteServiceModel> satelliteServiceModelList = this.satelliteService.findAllOrderedByName();
+        List<SatelliteViewModel> satelliteViewModelList = satelliteServiceModelList
+                .stream()
+                .map(satelliteServiceModel -> this.modelMapper
+                        .map(satelliteServiceModel, SatelliteViewModel.class))
+                .collect(Collectors.toList());
+        return satelliteViewModelList;
+
     }
 
     private List<PlanetViewModel> findPlanetsOrderedByName() {

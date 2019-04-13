@@ -11,7 +11,7 @@
     </header>
     <main class="mt-4 mb-4">
         <div class="container">
-            <h1>Edit Galaxy</h1>
+            <h1 class="text-center text-white">Edit Galaxy</h1>
             <form th:action="@{/galaxies/edit/{id} (id=${galaxyBindingModel.id})}" method="post"
                   th:object="${galaxyBindingModel}">
                 <div class="form-group" th:classappend="${#fields.hasErrors('name')}? 'has-danger'">

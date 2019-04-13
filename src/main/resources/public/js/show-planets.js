@@ -55,7 +55,7 @@ $(document).ready(function (){
              + '<td class="col-md-1 text-center">' + ((data[i].thereRing) ? "Yes" : "No") + '</td>'
              + '<td class="col-md-1 text-center">'
                  + '<a type="button" class="btn btn-custom btn-sm"'
-                    + 'href="/planets/edit/' + data[i].id + '">Edit planet</a>'
+                    + 'href="/planets/edit/' + data[i].id +'" >Edit planet</a>'
              + '</td>'
              + '<td class="col-md-1 text-center">'
                  + '<form action="/planets/delete/' + data[i].id + '" method="post">'

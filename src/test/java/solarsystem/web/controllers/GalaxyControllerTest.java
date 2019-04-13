@@ -7,6 +7,7 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import solarsystem.SolarSystemApplication;
@@ -29,19 +30,22 @@ public class GalaxyControllerTest {
     private GalaxyRepository galaxyRepository;
 
     @Test
+    @WithMockUser(roles = "USER")
     public void testShow() throws Exception {
         this.mvc.perform(get("/galaxies/show")).andDo(print()).andExpect(status().isOk())
                 .andExpect(view().name("galaxies/all-galaxies"));
 
     }
     @Test
-    public void testRenderAddGalaxyPage() throws Exception {
+    @WithMockUser(roles = "MODERATOR")
+    public void testGetAddGalaxyPage() throws Exception {
         this.mvc.perform(get("/galaxies/add")).andDo(print()).andExpect(status().isOk())
                 .andExpect(view().name("galaxies/add-galaxy"));
 
     }
     @Test
-    public void testRenderEditGalaxyPage() throws Exception {
+    @WithMockUser(roles = "MODERATOR")
+    public void testGetEditGalaxyPage() throws Exception {
         this.mvc.perform(get("/galaxies/edit")).andDo(print()).andExpect(status().isNotFound());
 
     }

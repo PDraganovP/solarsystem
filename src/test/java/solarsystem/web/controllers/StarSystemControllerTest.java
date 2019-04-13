@@ -7,6 +7,7 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import solarsystem.SolarSystemApplication;
@@ -26,19 +27,22 @@ public class StarSystemControllerTest {
 
 
     @Test
+    @WithMockUser(roles = "USER")
     public void testShow() throws Exception {
         this.mvc.perform(get("/starSystems/show")).andDo(print()).andExpect(status().isOk())
                 .andExpect(view().name("starSystems/all-starSystems"));
 
     }
     @Test
-    public void testRenderAddPlanetPage() throws Exception {
+    @WithMockUser(roles = "MODERATOR")
+    public void testGetAddPlanetPage() throws Exception {
         this.mvc.perform(get("/starSystems/add")).andDo(print()).andExpect(status().isOk())
                 .andExpect(view().name("starSystems/add-starSystem"));
 
     }
     @Test
-    public void testRenderEditPlanetPage() throws Exception {
+    @WithMockUser(roles = "MODERATOR")
+    public void testGetEditPlanetPage() throws Exception {
         this.mvc.perform(get("/starSystems/edit")).andDo(print()).andExpect(status().isNotFound());
 
     }

@@ -51,6 +51,7 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownSatellites">
                         <a class="dropdown-item" th:href="@{/satellites/show}">Show</a>
+                        <a class="dropdown-item" th:href="@{/satellites/compareSatellites}">Compare satellites</a>
                         <a class="dropdown-item" th:href="@{/satellites/add}" sec:authorize="hasRole('ROLE_MODERATOR')">Add</a>
                     </div>
                 </li>

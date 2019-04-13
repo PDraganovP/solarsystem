@@ -42,16 +42,16 @@ public class GalaxyController extends BaseController {
                 .map(galaxyServiceModel, GalaxyViewModel.class)).collect(Collectors.toList());
         modelAndView.addObject("galaxyViewModel", galaxyViewModelList);
 
-        return this.view("galaxies/all-galaxies", modelAndView);
+        return super.view("galaxies/all-galaxies", modelAndView);
     }
 
     @GetMapping("/add")
     @PreAuthorize("hasRole('ROLE_MODERATOR')")
     @PageFooter
     @PageNavbar
-    public ModelAndView renderAddGalaxyPage(@ModelAttribute("galaxyBindingModel") GalaxyBindingModel galaxyBindingModel,
+    public ModelAndView getAddGalaxyPage(@ModelAttribute("galaxyBindingModel") GalaxyBindingModel galaxyBindingModel,
                                             ModelAndView modelAndView) {
-        return this.view("galaxies/add-galaxy", modelAndView);
+        return super.view("galaxies/add-galaxy", modelAndView);
     }
 
     @PostMapping("/add")
@@ -60,24 +60,24 @@ public class GalaxyController extends BaseController {
                                   @Valid @ModelAttribute(name = "galaxyBindingModel") GalaxyBindingModel galaxyBindingModel,
                                   BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return this.view("galaxies/add-galaxy", modelAndView);
+            return super.view("galaxies/add-galaxy", modelAndView);
         }
         GalaxyServiceModel galaxyServiceModel = this.modelMapper.map(galaxyBindingModel, GalaxyServiceModel.class);
         GalaxyServiceModel galaxyServiceModelWithId = this.galaxyService.saveGalaxy(galaxyServiceModel);
         galaxyBindingModel.setId(galaxyServiceModelWithId.getId());
 
         if (galaxyServiceModelWithId == null) {
-            return this.view("galaxies/add-galaxy", modelAndView);
+            return super.view("galaxies/add-galaxy", modelAndView);
         }
 
-        return this.redirect("/galaxies/show");
+        return super.redirect("/galaxies/show");
     }
 
     @GetMapping("/edit/{id}")
     @PreAuthorize("hasRole('ROLE_MODERATOR')")
     @PageFooter
     @PageNavbar
-    public ModelAndView renderEditGalaxyPage(@PathVariable("id") String id,
+    public ModelAndView getEditGalaxyPage(@PathVariable("id") String id,
                                              @ModelAttribute("galaxyBindingModel") GalaxyBindingModel galaxyBindingModel,
                                              ModelAndView modelAndView) {
 
@@ -86,7 +86,7 @@ public class GalaxyController extends BaseController {
 
         modelAndView.addObject("galaxyBindingModel", galaxyBindingModel);
 
-        return this.view("galaxies/edit-galaxy", modelAndView);
+        return super.view("galaxies/edit-galaxy", modelAndView);
     }
 
     @PostMapping("/edit/{id}")
@@ -97,7 +97,7 @@ public class GalaxyController extends BaseController {
                                    ModelAndView modelAndView) {
 
         if (bindingResult.hasErrors()) {
-            return this.view("galaxies/edit-galaxy", modelAndView);
+            return super.view("galaxies/edit-galaxy", modelAndView);
         }
 
         galaxyBindingModel.setId(id);
@@ -105,7 +105,7 @@ public class GalaxyController extends BaseController {
 
         this.galaxyService.editGalaxy(galaxyServiceModel);
 
-        return this.redirect("/galaxies/show");
+        return super.redirect("/galaxies/show");
     }
 
     @PostMapping("/delete/{id}")
@@ -115,9 +115,9 @@ public class GalaxyController extends BaseController {
 
         if (!isDeleted) {
 
-            return this.view("galaxies/all-galaxies", modelAndView);
+            return super.view("galaxies/all-galaxies", modelAndView);
         }
 
-        return this.redirect("/galaxies/show");
+        return super.redirect("/galaxies/show");
     }
 }

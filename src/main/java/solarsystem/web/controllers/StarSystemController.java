@@ -26,11 +26,11 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/starSystems")
 public class StarSystemController extends BaseController {
-    private StarSystemService starSystemService;
-    private ModelMapper modelMapper;
-    private PlanetService planetService;
-    private GalaxyService galaxyService;
-    private StarService starService;
+    private final StarSystemService starSystemService;
+    private final ModelMapper modelMapper;
+    private final PlanetService planetService;
+    private final GalaxyService galaxyService;
+    private final StarService starService;
 
 
     @Autowired
@@ -53,21 +53,21 @@ public class StarSystemController extends BaseController {
                 .collect(Collectors.toList());
         modelAndView.addObject("starSystemViewModel", starSystemViewModelList);
 
-        return this.view("starSystems/all-starSystems", modelAndView);
+        return super.view("starSystems/all-starSystems", modelAndView);
     }
 
     @GetMapping("/add")
     @PreAuthorize("hasRole('ROLE_MODERATOR')")
     @PageFooter
     @PageNavbar
-    public ModelAndView renderAddStarSystemPage(@ModelAttribute("starSystemBindingModel") StarSystemBindingModel starSystemBindingModel,
+    public ModelAndView getAddStarSystemPage(@ModelAttribute("starSystemBindingModel") StarSystemBindingModel starSystemBindingModel,
                                                 ModelAndView modelAndView) {
 
         List<GalaxyViewModel> galaxiesOrderedByName = this.findGalaxiesOrderedByName();
         modelAndView.addObject("galaxiesModels", galaxiesOrderedByName);
 
 
-        return this.view("starSystems/add-starSystem", modelAndView);
+        return super.view("starSystems/add-starSystem", modelAndView);
     }
 
     @PostMapping("/add")
@@ -76,24 +76,24 @@ public class StarSystemController extends BaseController {
                                       @Valid @ModelAttribute(name = "starSystemBindingModel") StarSystemBindingModel starSystemBindingModel,
                                       BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return this.view("starSystems/add-starSystem", modelAndView);
+            return super.view("starSystems/add-starSystem", modelAndView);
         }
         StarSystemServiceModel starSystemServiceModel = this.modelMapper.map(starSystemBindingModel, StarSystemServiceModel.class);
         StarSystemServiceModel starSystemServiceModelWithId = this.starSystemService.saveStarSystem(starSystemServiceModel);
         starSystemBindingModel.setId(starSystemServiceModelWithId.getId());
 
         if (starSystemServiceModelWithId == null) {
-            return this.view("starSystems/add-starSystem", modelAndView);
+            return super.view("starSystems/add-starSystem", modelAndView);
         }
 
-        return this.redirect("/starSystems/show");
+        return super.redirect("/starSystems/show");
     }
 
     @GetMapping("/edit/{id}")
     @PreAuthorize("hasRole('ROLE_MODERATOR')")
     @PageFooter
     @PageNavbar
-    public ModelAndView renderEditStarSystemPage(@PathVariable("id") String id,
+    public ModelAndView getEditStarSystemPage(@PathVariable("id") String id,
                                                  @ModelAttribute("starSystemBindingModel") StarSystemBindingModel starSystemBindingModel,
                                                  ModelAndView modelAndView) {
 
@@ -105,7 +105,7 @@ public class StarSystemController extends BaseController {
 
         modelAndView.addObject("starSystemBindingModel", starSystemBindingModel);
 
-        return this.view("starSystems/edit-starSystem", modelAndView);
+        return super.view("starSystems/edit-starSystem", modelAndView);
     }
 
     @PostMapping("/edit/{id}")
@@ -116,7 +116,7 @@ public class StarSystemController extends BaseController {
                                        ModelAndView modelAndView) {
 
         if (bindingResult.hasErrors()) {
-            return this.view("starSystem/edit-starSystem", modelAndView);
+            return super.view("starSystem/edit-starSystem", modelAndView);
         }
 
         starSystemBindingModel.setId(id);
@@ -124,7 +124,7 @@ public class StarSystemController extends BaseController {
 
         this.starSystemService.editStarSystem(starSystemServiceModel);
 
-        return this.redirect("/starSystems/show");
+        return super.redirect("/starSystems/show");
     }
 
     @PostMapping("/delete/{id}")
@@ -133,10 +133,10 @@ public class StarSystemController extends BaseController {
         boolean isDeleted = this.starSystemService.deleteStarSystemById(id);
 
         if (!isDeleted) {
-            return this.view("starSystems/all-starSystems", modelAndView);
+            return super.view("starSystems/all-starSystems", modelAndView);
         }
 
-        return this.redirect("/starSystems/show");
+        return super.redirect("/starSystems/show");
     }
 
     private List<GalaxyViewModel> findGalaxiesOrderedByName() {

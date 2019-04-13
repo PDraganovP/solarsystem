@@ -16,16 +16,15 @@ $(document).ready(function (){
         let luminosityHeightOne = +maxHeight * +percentOne;
         let luminosityHeightTwo = +maxHeight * +percentTwo;
 
-        let ctxPlanetOne = starCanvas.getContext("2d");
-        ctxPlanetOne.fillStyle = "#c6f212";
-        ctxPlanetOne.fillRect(80,(+400 - +luminosityHeightOne),130,luminosityHeightOne);
+        let ctxStarOne = starCanvas.getContext("2d");
+        ctxStarOne.fillStyle = "#c6f212";
+        ctxStarOne.fillRect(80,(+400 - +luminosityHeightOne),130,luminosityHeightOne);
+        ctxStarOne.stroke();
 
-        ctxPlanetOne.stroke();
-
-        let ctxPlanetTwo = starCanvas.getContext("2d");
-        ctxPlanetTwo.fillStyle = "#2449fc";
-        ctxPlanetTwo.fillRect(290,(+400 - +luminosityHeightTwo),130,luminosityHeightTwo);
-        ctxPlanetTwo.stroke();
+        let ctxStarTwo = starCanvas.getContext("2d");
+        ctxStarTwo.fillStyle = "#2449fc";
+        ctxStarTwo.fillRect(290,(+400 - +luminosityHeightTwo),130,luminosityHeightTwo);
+        ctxStarTwo.stroke();
 
     });
 });

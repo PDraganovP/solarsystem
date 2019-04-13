@@ -21,37 +21,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = SolarSystemApplication.class)
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-public class StarControllerTest {
+public class HomeControllerTest {
     @Autowired
     private MockMvc mvc;
 
-
     @Test
-    @WithMockUser(roles = "USER")
-    public void testShow() throws Exception {
-        this.mvc.perform(get("/stars/show")).andDo(print()).andExpect(status().isOk())
-                .andExpect(view().name("stars/all-stars"));
+   // @WithMockUser(roles = "USER")
+    public void testIndex() throws Exception {
+        this.mvc.perform(get("/")).andDo(print()).andExpect(status().isOk())
+                .andExpect(view().name("home/index"));
 
-    }
-
-    @Test
-    @WithMockUser(roles = "MODERATOR")
-    public void testGetAddStarPage() throws Exception {
-        this.mvc.perform(get("/stars/add")).andDo(print()).andExpect(status().isOk())
-                .andExpect(view().name("stars/add-star"));
-
-    }
-
-    @Test
-    @WithMockUser(roles = "MODERATOR")
-    public void testGetEditStarPage() throws Exception {
-        this.mvc.perform(get("/stars/edit")).andDo(print()).andExpect(status().isNotFound());
     }
 
     @Test
     @WithMockUser(roles = "USER")
-    public void testGetCompareStarsPage() throws Exception {
-        this.mvc.perform(get("/stars/compareStars")).andDo(print()).andExpect(status().isOk())
-                .andExpect(view().name("stars/compare-stars"));
+    public void testHome() throws Exception {
+        this.mvc.perform(get("/home")).andDo(print()).andExpect(status().isOk())
+                .andExpect(view().name("home/home"));
+
     }
 }

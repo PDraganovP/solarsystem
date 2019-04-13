@@ -27,9 +27,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/planets")
 public class PlanetController extends BaseController {
 
-    private PlanetService planetService;
-    private ModelMapper modelMapper;
-    private StarSystemService starSystemService;
+    private final PlanetService planetService;
+    private final ModelMapper modelMapper;
+    private final StarSystemService starSystemService;
 
     @Autowired
     public PlanetController(PlanetService planetService, ModelMapper modelMapper, StarSystemService starSystemService) {
@@ -49,20 +49,20 @@ public class PlanetController extends BaseController {
                 .collect(Collectors.toList());
         modelAndView.addObject("planetViewModel", planetViewModelList);
 
-        return this.view("planets/all-planets", modelAndView);
+        return super.view("planets/all-planets", modelAndView);
     }
 
     @GetMapping("/add")
     @PreAuthorize("hasRole('ROLE_MODERATOR')")
     @PageFooter
     @PageNavbar
-    public ModelAndView renderAddPlanetPage(@ModelAttribute("planetBindingModel") PlanetBindingModel planetBindingModel,
+    public ModelAndView getAddPlanetPage(@ModelAttribute("planetBindingModel") PlanetBindingModel planetBindingModel,
                                             ModelAndView modelAndView) {
 
         List<StarSystemViewModel> starSystemsOrderedByName = this.findStarSystemsOrderedByName();
         modelAndView.addObject("starSystemsModels", starSystemsOrderedByName);
 
-        return this.view("planets/add-planet", modelAndView);
+        return super.view("planets/add-planet", modelAndView);
     }
 
     @PostMapping("/add")
@@ -72,24 +72,24 @@ public class PlanetController extends BaseController {
                                   BindingResult bindingResult) {
         String name = planetBindingModel.getName();
         if (bindingResult.hasErrors()) {
-            return this.view("planets/add-planet", modelAndView);
+            return super.view("planets/add-planet", modelAndView);
         }
         PlanetServiceModel planetServiceModel = this.modelMapper.map(planetBindingModel, PlanetServiceModel.class);
         PlanetServiceModel planetServiceModelId = this.planetService.savePlanet(planetServiceModel);
         planetBindingModel.setId(planetServiceModelId.getId());
 
         if (planetServiceModelId == null) {
-            return this.view("planets/add-planet", modelAndView);
+            return super.view("planets/add-planet", modelAndView);
         }
 
-        return this.redirect("/planets/show");
+        return super.redirect("/planets/show");
     }
 
     @GetMapping("/edit/{id}")
     @PreAuthorize("hasRole('ROLE_MODERATOR')")
     @PageFooter
     @PageNavbar
-    public ModelAndView renderEditPlanetPage(@PathVariable("id") String id,
+    public ModelAndView getEditPlanetPage(@PathVariable("id") String id,
                                              @ModelAttribute("planetBindingModel") PlanetBindingModel planetBindingModel,
                                              ModelAndView modelAndView) {
         List<StarSystemViewModel> starSystemsOrderedByName = this.findStarSystemsOrderedByName();
@@ -100,7 +100,7 @@ public class PlanetController extends BaseController {
 
         modelAndView.addObject("planetBindingModel", planetBindingModel);
 
-        return this.view("planets/edit-planet", modelAndView);
+        return super.view("planets/edit-planet", modelAndView);
     }
 
 
@@ -112,7 +112,7 @@ public class PlanetController extends BaseController {
                                    ModelAndView modelAndView) {
 
         if (bindingResult.hasErrors()) {
-            return this.view("planets/edit-planet", modelAndView);
+            return super.view("planets/edit-planet", modelAndView);
         }
 
         planetBindingModel.setId(id);
@@ -120,7 +120,7 @@ public class PlanetController extends BaseController {
 
         this.planetService.editPlanet(planetServiceModel);
 
-        return this.redirect("/planets/show");
+        return super.redirect("/planets/show");
     }
 
     @PostMapping("/delete/{id}")
@@ -130,10 +130,10 @@ public class PlanetController extends BaseController {
 
         if (!isDeleted) {
 
-            return this.view("planets/all-planets", modelAndView);
+            return super.view("planets/all-planets", modelAndView);
         }
 
-        return this.redirect("/planets/show");
+        return super.redirect("/planets/show");
     }
 
     @GetMapping("/comparePlanets")
@@ -146,7 +146,7 @@ public class PlanetController extends BaseController {
         List<PlanetViewModel> planetsOrderedByName2 = this.findPlanetsOrderedByName();
         modelAndView.addObject("planetsTwo", planetsOrderedByName2);
 
-        return this.view("planets/compare-planets", modelAndView);
+        return super.view("planets/compare-planets", modelAndView);
     }
 
     private List<PlanetViewModel> findPlanetsOrderedByName() {

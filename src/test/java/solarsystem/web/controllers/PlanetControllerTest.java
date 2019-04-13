@@ -7,6 +7,7 @@ import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import solarsystem.SolarSystemApplication;
@@ -26,6 +27,7 @@ public class PlanetControllerTest {
 
 
     @Test
+    @WithMockUser(roles = "USER")
     public void testShow() throws Exception {
         this.mvc.perform(get("/planets/show")).andDo(print()).andExpect(status().isOk())
                 .andExpect(view().name("planets/all-planets"));
@@ -33,15 +35,23 @@ public class PlanetControllerTest {
     }
 
     @Test
-    public void testRenderAddPlanetPage() throws Exception {
+    @WithMockUser(roles = "MODERATOR")
+    public void testGetAddPlanetPage() throws Exception {
         this.mvc.perform(get("/planets/add")).andDo(print()).andExpect(status().isOk())
                 .andExpect(view().name("planets/add-planet"));
 
     }
 
     @Test
-    public void testRenderEditPlanetPage() throws Exception {
+    @WithMockUser(roles = "MODERATOR")
+    public void testGetEditPlanetPage() throws Exception {
         this.mvc.perform(get("/planets/edit")).andDo(print()).andExpect(status().isNotFound());
+    }
 
+    @Test
+    @WithMockUser(roles = "USER")
+    public void testGetComparePlanetsPage() throws Exception {
+        this.mvc.perform(get("/planets/comparePlanets")).andDo(print()).andExpect(status().isOk())
+                .andExpect(view().name("planets/compare-planets"));
     }
 }
