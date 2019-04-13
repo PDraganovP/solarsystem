@@ -1,2 +1,2 @@
 # solarsystem
-Simple application program
+Simple application devoted to space.
